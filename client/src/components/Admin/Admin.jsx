@@ -1,52 +1,48 @@
-import React,{useState, useEffect } from 'react'
+import React,{useState,useEffect} from 'react'
 import './Admin.scss'
-import { useNavigate } from 'react-router-dom'
 import Queue from '../Queue/Queue';
+import Error from '../Error/Error';
 const Admin = () => {
   const [time,setTime] = useState("");
-  const [isTime,isTimeSet] = useState(false);
-  const PostData = async(e) =>{
-    e.preventDefault();
-    try{
-        fetch('/admin',{mode:'cors'},{
-        method:'POST',
+  const [started,setStarted] = useState(false);
+  
+  useEffect(() => {
+    const data = window.localStorage.getItem('timeIsset');
+    if(data!==null) setStarted(JSON.parse(data));
+    
+  }, [])
+  
+  const PostData = (event) =>{
+    event.preventDefault();
+    console.log('inside function');
+        console.log('here');
+        fetch("/admin",{
+        method:"POST",
         headers:{
-          'Content-Type' : 'application/json'
+          "Content-Type" : "application/json"
         },
-        body:JSON.stringify(time)
-      }).then((response)=>{
-        console.log(response)
-        if(response.json().status === 200)
-        {
-          console.log(response)
-          console.log(response.status)
-          isTimeSet(true)
-        }
-      })
-      .then((data)=>{console.log(data)})
-      .catch((err)=>{console.log(err)});
-
-      // const data = await res.json();
-      // if(!data || data.status === 401){
-      //   window.alert('Date Not Inserted');
-      // }else{
-      //   isTimeSet(true);
-      //   window.alert('Date Inserted');
-      // }
-    }catch(err){
-      console.log(err);
-    }
+        body:JSON.stringify({time})
+      }).then(function(response){
+        // console.log(response.json());
+        return response.json();
+      }).then(function(data){
+        window.localStorage.setItem('timeIsset',true);
+        console.log(data);
+      });
+      console.log('there');
+    
   }
   return (
     <div>
-        <form method='POST'>
+        <form method='POST' onSubmit={PostData}>
           Time:<input type="time" name="time" id="time"
            value={time} 
            onChange={(e)=>setTime(e.target.value)}/>
-          <input type="submit" value="submit" onSubmit={PostData}/>
+          <button value="submit">Submit</button>
         </form>
         <div className="container">
-          <Queue/>
+          {started ? <Queue/>:<Error/>}
+          
         </div>
         
     </div>
