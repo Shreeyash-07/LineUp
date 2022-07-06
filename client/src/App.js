@@ -5,6 +5,7 @@ import Home from './components/Home/Home';
 import Admin from './components/Admin/Admin';
 
 function App() {
+  // window.localStorage.setItem('timeIsset',false);
   return (
     <BrowserRouter>
       <Routes>

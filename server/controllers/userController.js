@@ -54,7 +54,7 @@ exports.getslots = async(req,res,next) =>{
                 timeArr.push(element.time);
             }
         });
-        res.json({timeArr});
+        res.json(timeArr);
     })
 }
 

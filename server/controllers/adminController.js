@@ -5,12 +5,16 @@ const queueModel = require('../models/queue');
 
 exports.setTime = async(req,res,next) =>{
     var time = req.body.time;
-
+    console.log(time);
+    console.log('Hello');
     var totalSlots = 8;
+    let yr = new Date().getFullYear(),
+        dt = new Date().getDate(),
+        mon = new Date().getMonth();
     var aslots = [];
     var slotss = []
     var [hrs,min] = time.split(':');
-    const finalDate = new Date(2022,06,02,hrs,min,00);
+    const finalDate = new Date(yr,mon,dt,hrs,min,00);
 
     var toSetMin = min;
     
@@ -45,7 +49,7 @@ exports.setTime = async(req,res,next) =>{
         })
         // generateQR(totalSlots,slots,parseInt(toSetMin)+1);
     });
-    res.status(200);//json({message:aslots,test:parseInt(toSetMin)+1})
+    return res.json({date:"set successfully"}).status(200);//json({message:aslots,test:parseInt(toSetMin)+1})
 }
 exports.getTime =  async(req,res,next) =>{
     console.log(new Date().toLocaleDateString());

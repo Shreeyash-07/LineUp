@@ -87,14 +87,14 @@ const Queue = () => {
         <TableHead>
           <TableRow>
             <TableCell />
-            <TableCell>Dessert (100g serving)</TableCell>
+            <TableCell>Dessert(100g serving)</TableCell>
             <TableCell align="right">Calories</TableCell>
             <TableCell align="right">Fat&nbsp;(g)</TableCell>
             <TableCell align="right">Carbs&nbsp;(g)</TableCell>
             <TableCell align="right">Protein&nbsp;(g)</TableCell>
           </TableRow>
         </TableHead>
-        {loading ? ("Please wait loading"):(data._id)}
+        {/* {loading ? ("Please wait loading"):(data._id)} */}
         {/* <TableBody>
           {rows.map((row) => (
             <Row key={row.name} row={row} />
