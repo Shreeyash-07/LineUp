@@ -74,7 +74,7 @@ exports.bookslot = async (req, res) => {
   let bookedSlotObj = { name: name, phone: phone };
   await queueModel.updateOne(
     {
-      date: new Date().toLocaleDateString(),
+      date: "7/7/2022",
       "slots.time": slot,
     },
     {
@@ -83,13 +83,14 @@ exports.bookslot = async (req, res) => {
   );
 
   let slots = await queueModel.aggregate([
-    { $match: { date: new Date().toLocaleDateString() } },
+    { $match: { date: "7/7/2022" } },
     { $unwind: "$slots" },
     { $match: { "slots.time": slot } },
     {
       $project: {
         "slots.time": "$slots.time",
         "slots.QRCode": "$slots.QRCode",
+        "slots.count": { $size: "$slots.users" },
         "slots.users": "$slots.users",
       },
     },
@@ -108,9 +109,9 @@ exports.bookslot = async (req, res) => {
   // console.log(uri);
   // console.log(slots[0]);
 
-  const updateQRCode = await queueModel.updateOne(
+  await queueModel.updateOne(
     {
-      date: new Date().toLocaleDateString(),
+      date: "7/7/2022",
       "slots.time": slot,
     },
     {
@@ -118,7 +119,20 @@ exports.bookslot = async (req, res) => {
     }
   );
 
-  res.json(updateQRCode);
+  let len = slots[0].slots[0].count;
+
+  len === 5 &&
+    (await queueModel.updateOne(
+      {
+        data: "7/7/2022",
+        "availableSlots.time": slot,
+      },
+      {
+        $set: { "availableSlots.$.isFull": true },
+      }
+    ));
+
+  res.json({ len, message: "slot has been booked" });
 };
 
 const generateQR = async (users) => {
