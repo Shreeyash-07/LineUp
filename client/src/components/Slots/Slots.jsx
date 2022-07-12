@@ -16,6 +16,7 @@ const Slots = () => {
             value={element}
             onClick={slotBook}
             style={{ cursor: "pointer" }}
+            h1
           >
             {element}
           </li>
