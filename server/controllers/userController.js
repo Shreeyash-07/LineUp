@@ -14,9 +14,11 @@ exports.signup = async(req,res,next)=>{
             });
             const token = await user.getSignedToken();
             res.status(201).json({success:true,token});
+            console.log("new user added")
         } catch (error) {
             next(error);
         }
+    console.log("inside signup")
     }
 };
 
@@ -34,6 +36,7 @@ exports.login = async(req,res,next)=>{
                 return next(createError(401,'Credentials are incorrect'));
             }else{
                 sendToken(user,200,res);
+                console.log("login")
             }
         } catch (error) {
             // res.status(500).json({success:false,desc:'Error'+error})

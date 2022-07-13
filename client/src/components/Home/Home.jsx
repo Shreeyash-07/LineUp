@@ -31,6 +31,7 @@ const Home = () => {
   return (
     <>
       {/* <Navbar/> */}
+      Hi this is name
       <div className="outer_container">
         <div className="inner_container">
           <div className="middle_container">
