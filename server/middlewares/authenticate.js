@@ -8,13 +8,15 @@ exports.Authenticate = async(req,res,next) =>{
         if(!token) {
             return next(createError(401,'You are not authenticated'))
         }
-        const verifyToken = jwt.verify(token,process.env.SECRET_KEY);
-        const user = await User.findOne({_id:verifyToken._id,"tokens:token":token});
+        const verifyToken = jwt.verify(token,process.env.JWT_SECRET);
+        const user = await User.findOne({_id:verifyToken._id,"tokens.token":token});
 
         if(!user) {throw new Error('User not found')}
 
         req.token = token;
         req.user = user;
+        req.userId= user._id;
+
         next();
 
     }catch(err){

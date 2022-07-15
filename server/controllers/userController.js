@@ -1,5 +1,6 @@
 const userModel = require('../models/user');
 const queueModel = require('../models/queue');
+const autheticate = require('../middlewares/authenticate');
 const { createError } = require('../utils/error');
 
 exports.signup = async(req,res,next)=>{
@@ -62,6 +63,11 @@ exports.getslots = async(req,res,next) =>{
         res.json(obj);
     })
 }
+
+exports.about = (autheticate,(req,res)=>{
+    console.log("hello my about");
+    res.send("req.user");
+})
 
 const findEmailDuplicates = async(email,res)=>{
     try {

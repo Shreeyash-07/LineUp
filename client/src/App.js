@@ -5,6 +5,8 @@ import Home from './components/Home/Home';
 import Admin from './components/Admin/Admin';
 import Navbar from './components/Navbar/Navbar'
 import Slotbook from './components/Slotbook/Slotbook';
+import About from './components/About/About';
+import Queue from './components/Queue/Queue';
 // import bootstrap from './bootstrap/dist/css';
 
 function App() {
@@ -18,6 +20,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path='/signup' element={<Singup />} />
         <Route path='/getslots' element={<Slotbook />}/>
+        <Route path='/about' element={<About />}/>
+        {/* <Route path='/queue' element={<Queue />}/> */}
       </Routes>
     </BrowserRouter>
     
