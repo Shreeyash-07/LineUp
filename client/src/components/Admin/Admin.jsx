@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Admin.scss";
+
 import Queue from "../Queue/Queue";
 import Error from "../Error/Error";
 const Admin = () => {

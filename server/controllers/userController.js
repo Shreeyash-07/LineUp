@@ -49,7 +49,7 @@ exports.login = async (req, res, next) => {
 exports.getslots = async (req, res, next) => {
   queueModel.find(
     {
-      date: new Date().toLocaleDateString(),
+      date: "10/7/2022",
       "availableSlots.isFull": { $eq: 0 },
     },
     { _id: 0, date: 0, slots: 0, __v: 0 },
@@ -64,7 +64,7 @@ exports.getslots = async (req, res, next) => {
           timeArr.push(element.time);
         }
       });
-      res.json(timeArr);
+      res.json(obj);
     }
   );
 };

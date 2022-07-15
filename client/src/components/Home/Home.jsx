@@ -5,22 +5,10 @@ import QrScanLogo from "../../images/qr-code.png";
 import Navbar from "../Navbar/Navbar";
 import Tabs from "../Tabs/Tabs";
 import "./Home.scss";
-import Slots from "../Slots/Slots";
 
 const Home = () => {
   const [isQrClick, setQrCLick] = useState(false);
   const [dat, setDat] = useState("No result");
-
-  const [started, setStarted] = useState(false);
-
-  useEffect(() => {
-    const data = window.localStorage.getItem("timeIsset");
-    if (data !== null) {
-      console.log("inside");
-      setStarted(true);
-    }
-    console.log(started);
-  }, []);
 
   const OpenQR = (e) => {
     e.preventDefault();
@@ -53,7 +41,6 @@ const Home = () => {
               />
             ) : null}
           </div>
-          {started && <Slots />}
         </div>
       </div>
     </>
