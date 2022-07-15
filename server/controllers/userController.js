@@ -74,7 +74,7 @@ exports.bookslot = async (req, res) => {
   let bookedSlotObj = { name: name, phone: phone };
   await queueModel.updateOne(
     {
-      date: "7/7/2022",
+      date: new Date().toLocaleDateString(),
       "slots.time": slot,
     },
     {
@@ -83,7 +83,7 @@ exports.bookslot = async (req, res) => {
   );
 
   let slots = await queueModel.aggregate([
-    { $match: { date: "7/7/2022" } },
+    { $match: { date: new Date().toLocaleDateString() } },
     { $unwind: "$slots" },
     { $match: { "slots.time": slot } },
     {
@@ -111,7 +111,7 @@ exports.bookslot = async (req, res) => {
 
   await queueModel.updateOne(
     {
-      date: "7/7/2022",
+      date: new Date().toLocaleDateString(),
       "slots.time": slot,
     },
     {
@@ -124,7 +124,7 @@ exports.bookslot = async (req, res) => {
   len === 5 &&
     (await queueModel.updateOne(
       {
-        data: "7/7/2022",
+        data: new Date().toLocaleDateString(),
         "availableSlots.time": slot,
       },
       {
