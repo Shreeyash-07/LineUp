@@ -1,49 +1,35 @@
-input[type=time]{
-    border: none;
-    color: #2a2c2d;
-    font-size: 14px;
-    font-family: Helvetica, sans-serif;
-    width: 180px;
+input[type="time"] {
+  border: none;
+  color: #2a2c2d;
+  font-size: 14px;
+  font-family: Helvetica, sans-serif;
+  width: 180px;
 }
 
-input[type=time]::-webkit-datetime-edit-fields-wrapper{
-    display: flex;
+input[type="time"]::-webkit-datetime-edit-fields-wrapper {
+  display: flex;
 }
 
-input[type=time]::-webkit-datetime-edit-text{
-    padding: 19px 4px;
+input[type="time"]::-webkit-datetime-edit-text {
+  padding: 19px 4px;
 }
 
-input[type=time]::-webkit-datetime-edit-hour-field {
-    background-color: #f2f4f5;
-    border-radius: 15%;
-    padding: 19px 13px;
-  }
-  
-  /* Minute */
-  input[type=time]::-webkit-datetime-edit-minute-field {
-    background-color: #f2f4f5;
-    border-radius: 15%;
-    padding: 19px 13px;
-  }
+input[type="time"]::-webkit-datetime-edit-hour-field {
+  background-color: #f2f4f5;
+  border-radius: 15%;
+  padding: 19px 13px;
+}
 
-  input[type=time]::-webkit-datetime-edit-ampm-field {
-    background-color: #7155d3;
-    border-radius: 15%;
-    color: #fff;
-    padding: 19px 13px;
-  }
+/* Minute */
+input[type="time"]::-webkit-datetime-edit-minute-field {
+  background-color: #f2f4f5;
+  border-radius: 15%;
+  padding: 19px 13px;
+}
 
-.container{
-  margin-top: 10px;
-  width: 60rem;
-  height: 30rem;
-  border: 1px solid black;
-  padding: 2rem;
-  justify-content: center;
-  align-items: center;
-  p{
-    margin-left: 20rem;
-    margin-top: 10rem;
-  }
+input[type="time"]::-webkit-datetime-edit-ampm-field {
+  background-color: #7155d3;
+  border-radius: 15%;
+  color: #fff;
+  padding: 19px 13px;
 }

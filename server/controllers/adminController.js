@@ -1,62 +1,99 @@
-const express = require('express');
-const schedule = require('node-schedule');
-var QRCode = require('qrcode');
-const queueModel = require('../models/queue');
+const express = require("express");
+const schedule = require("node-schedule");
+var QRCode = require("qrcode");
+const queueModel = require("../models/queue");
 
-exports.setTime = async(req,res,next) =>{
-    var time = req.body.time;
-    console.log(time);
-    console.log('Hello');
-    var totalSlots = 8;
-    let yr = new Date().getFullYear(),
-        dt = new Date().getDate(),
-        mon = new Date().getMonth();
-    var aslots = [];
-    var slotss = []
-    var [hrs,min] = time.split(':');
-    const finalDate = new Date(yr,mon,dt,hrs,min,00);
+exports.setTime = async (req, res, next) => {
+  var time = req.body.time;
+  console.log(time);
+  console.log("Hello");
+  var totalSlots = 8;
+  let yr = new Date().getFullYear(),
+    dt = new Date().getDate(),
+    mon = new Date().getMonth();
+  var aslots = [];
+  var slotss = [];
+  var [hrs, min] = time.split(":");
+  const finalDate = new Date(yr, mon, dt, hrs, min, 00);
 
-    var toSetMin = min;
-    
-    min = parseInt(min)+15;
-    if(min === 60 || min > 60){
-        hrs=parseInt(hrs)+1;
-        min = min - 60;
-    }
-    var user = [ 
-        {name:'Sanket',phone:'34234324'},
-        {name:'Shree'}
-    ]
-    
-    const uri =  await generateQR(user);
-    console.log(uri)
-    for(var i=0;i<totalSlots;i++){
-        var nexthr=parseInt(hrs)+1;
-        var st = hrs+":"+min+"-"+nexthr+":"+min;
-        aslots.push({time:hrs+":"+min+"-"+nexthr+":"+min,isFull:false});
-        slotss.push({time:hrs+":"+min+"-"+nexthr+":"+min,QRCode:uri});
-        hrs=nexthr; 
-    }
+  var toSetMin = min;
 
-    const job =  schedule.scheduleJob(finalDate,function(){
-        queueModel.create({
-            date : new Date().toLocaleDateString(),
-            availableSlots:aslots,
-            slots:slotss,
-        },(err,result)=>{
-            if(err) console.log(err);
-            console.log('New day has been started');
-        })
-        // generateQR(totalSlots,slots,parseInt(toSetMin)+1);
+  min = parseInt(min) + 15;
+  if (min === 60 || min > 60) {
+    hrs = parseInt(hrs) + 1;
+    min = min - 60;
+  }
+  var user = [{ name: "Sanket", phone: "34234324" }, { name: "Shree" }];
+
+  const uri = await generateQR(user);
+  console.log(uri);
+  for (var i = 0; i < totalSlots; i++) {
+    var nexthr = parseInt(hrs) + 1;
+    var st = hrs + ":" + min + "-" + nexthr + ":" + min;
+    aslots.push({
+      time: hrs + ":" + min + "-" + nexthr + ":" + min,
+      isFull: false,
     });
-    return res.json({date:"set successfully"}).status(200);//json({message:aslots,test:parseInt(toSetMin)+1})
-}
-exports.getTime =  async(req,res,next) =>{
-    console.log(new Date().toLocaleDateString());
-    const slots =  await queueModel.find({date:new Date().toLocaleDateString()})
-    let slts = slots[0].availableSlots;
-    return res.json(slots[0]); 
-}
+    slotss.push({
+      time: hrs + ":" + min + "-" + nexthr + ":" + min,
+      QRCode: uri,
+    });
+    hrs = nexthr;
+  }
+
+  const job = schedule.scheduleJob(finalDate, function () {
+    queueModel.create(
+      {
+        date: new Date().toLocaleDateString(),
+        availableSlots: aslots,
+        slots: slotss,
+      },
+      (err, result) => {
+        if (err) console.log(err);
+        console.log("New day has been started");
+      }
+    );
+    // generateQR(totalSlots,slots,parseInt(toSetMin)+1);
+  });
+  return res.json({ date: "set successfully" }).status(200); //json({message:aslots,test:parseInt(toSetMin)+1})
+};
+exports.getTime = async (req, res, next) => {
+  // console.log(new Date().toLocaleDateString());
+  //   const slots = await queueModel.find({ date: "7/7/2022" });
+  const newSlots = await queueModel.aggregate([
+    { $match: { date: new Date().toLocaleDateString() } },
+    // {
+    //   $unwind: {
+    //     path: "$availableSlots",
+    //     includeArrayIndex: "index_1",
+    //   },
+    // },
+    // {
+    //   $unwind: {
+    //     path: "$slots",
+    //     includeArrayIndex: "index_2",
+    //   },
+    // },
+    {
+      $project: {
+        x: {
+          $zip: { inputs: ["$availableSlots", "$slots"] },
+        },
+      },
+    },
+    { $unwind: "$x" },
+    {
+      $project: {
+        time: { $first: "$x.time" },
+        isFull: { $first: "$x.isFull" },
+        QRCode: { $first: "$x.QRCode" },
+        users: { $first: "$x.users" },
+      },
+    },
+  ]);
+  //   let slts = slots[0].availableSlots;
+  return res.json(newSlots);
+};
 
 // function generateQR(slotsNumber,slots,min){
 //     var ind = 0;
@@ -80,14 +117,10 @@ exports.getTime =  async(req,res,next) =>{
 //     })
 // }
 
-const generateQR = async(user) =>{
-    try{
-        return await QRCode.toDataURL(user)
-    }catch(err){
-        return err;
-    }
-}
-
-
-
-
+const generateQR = async (user) => {
+  try {
+    return await QRCode.toDataURL(user);
+  } catch (err) {
+    return err;
+  }
+};

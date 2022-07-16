@@ -10,13 +10,22 @@ import Queue from './components/Queue/Queue';
 // import bootstrap from './bootstrap/dist/css';
 
 function App() {
+  const [started, setStarted] = useState(false);
+  useEffect(() => {
+    const data = window.localStorage.getItem("timeIsset");
+    if (data !== null) {
+      console.log("inside");
+      setStarted(true);
+    }
+    console.log(started);
+  }, []);
   // window.localStorage.setItem('timeIsset',false);
   return (
     <BrowserRouter>
     <Navbar />
       <Routes>
-        <Route path='/admin' element={<Admin/>}/>
-        <Route path='/' element={<Home/>} />
+        <Route path="/admin" element={<Admin />} />
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path='/signup' element={<Singup />} />
         <Route path='/getslots' element={<Slotbook />}/>
@@ -24,7 +33,6 @@ function App() {
         {/* <Route path='/queue' element={<Queue />}/> */}
       </Routes>
     </BrowserRouter>
-    
   );
 }
 
