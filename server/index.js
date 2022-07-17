@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require("mongoose");
+const cookieParser = require('cookie-parser')
 const schedule = require('node-schedule')
 const cors = require('cors')
 // routes
@@ -11,6 +12,7 @@ const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
 app.use(cors())
+app.use(cookieParser())
 const PORT = process.env.PORT;
 const MONGO_URI = process.env.MONGO_URI;
 

@@ -4,6 +4,7 @@ const { createError } = require('../utils/error');
 
 exports.Authenticate = async(req,res,next) =>{
     try{
+        console.log("inside auth")
         const token = req.cookies.jwtoken;
         if(!token) {
             return next(createError(401,'You are not authenticated'))
@@ -16,9 +17,10 @@ exports.Authenticate = async(req,res,next) =>{
         req.token = token;
         req.user = user;
         req.userId= user._id;
-
-        next();
-
+        cosole.log(user);
+        
+        res.send(req.userId);
+        //set cookies and save data here 
     }catch(err){
         res.status(401).json({SUCCESS:false,message:err});
         console.log(err);
@@ -26,6 +28,7 @@ exports.Authenticate = async(req,res,next) =>{
     }
 }
 
+ 
 exports.AuthenticateAdmin = (req,res,next) => {
     Authenticate(req,res,next,()=>{
         if(req.user.isAdmin){

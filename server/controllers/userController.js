@@ -1,8 +1,13 @@
 const userModel = require("../models/user");
 const queueModel = require("../models/queue");
+const autheticate = require("../middlewares/authenticate")
 const { createError } = require("../utils/error");
 const QRCode = require("qrcode");
-const { findOneAndUpdate } = require("../models/user");
+const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser')
+const User = require('../models/user');
+
+
 exports.signup = async (req, res, next) => {
   const { name, email, password, phone } = req.body;
   // let user = await userModel.findOne({email:email}).select('+password')
@@ -38,6 +43,7 @@ exports.login = async (req, res, next) => {
         return next(createError(401, "Credentials are incorrect"));
       } else {
         sendToken(user, 200, res);
+        console.log(user._id);
       }
     } catch (error) {
       // res.status(500).json({success:false,desc:'Error'+error})
@@ -69,10 +75,31 @@ exports.getslots = async (req, res, next) => {
   );
 };
 
-exports.about = (autheticate,(req,res)=>{
+exports.about=(autheticate, async (req,res)=>{
   console.log("hello my about");
-  res.send("req.user");
-})
+  try{
+    console.log("inside auth")
+    const token = req.cookies.jwtoken;
+    if(!token) {
+        return next(createError(401,'You are not authenticated'))
+    }
+    const verifyToken = jwt.verify(token,process.env.JWT_SECRET);
+    const user = await User.findOne({_id:verifyToken._id,"tokens.token":token});
+
+    if(!user) {throw new Error('User not found')}
+
+    req.token = token;
+    req.user = user;
+    req.userId= user._id;
+    console.log(user);
+    //set cookies and save data here 
+}catch(err){
+    res.status(401).json({SUCCESS:false,message:err});
+    console.log(err);
+
+}
+  res.send(req.user)
+});
 
 exports.bookslot = async (req, res) => {
   let { slot, name, phone } = req.body;
@@ -171,3 +198,4 @@ const sendToken = async (user, statusCode, res) => {
     .status(statusCode)
     .json({ success: true, token, user });
 };
+

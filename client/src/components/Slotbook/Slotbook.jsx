@@ -34,11 +34,13 @@ const Slotbook = () => {
   }
   return (
     <div className='container'>
+      <div className='text-center'>     
     <h1>Calender</h1>
-    <Calendar onChange={onChange} value={setValue} 
+    <Calendar className="m-auto" onChange={onChange} value={setValue} 
     />
+      </div>
     <div>
-    <div className="container">
+    <div className="container m-auto">
   <div className="row">
     <div className="col">
 <ul className="list-group">

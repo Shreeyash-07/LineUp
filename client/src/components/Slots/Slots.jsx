@@ -13,6 +13,7 @@ const Slots = () => {
   return (
     <div className="container">
       <Calendar
+        className='m-auto'
         value={date}
         onChange={(e) => setDate(e.target.value)}
       ></Calendar>
