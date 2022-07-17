@@ -63,14 +63,18 @@ exports.getslots = async (req, res, next) => {
       if (err) {
         res.json({ error: err });
       }
-      var obj = timeSlots[0].availableSlots;
-      var timeArr = [];
-      obj.forEach((element) => {
-        if (element.isFull === false) {
-          timeArr.push(element.time);
-        }
-      });
-      res.json(obj);
+      var slots = timeSlots[0].availableSlots;
+      // var timeArr = [];
+      // obj.forEach((element) => {
+      //   if (element.isFull === false) {
+      //     timeArr.push(element.time);
+      //   }
+      // });
+      const userObj = {
+        name: req.rootUser.name,
+        phone: req.rootUser.phone,
+      };
+      res.status(200).json({ slots, userObj });
     }
   );
 };
@@ -106,7 +110,7 @@ exports.bookslot = async (req, res) => {
   let bookedSlotObj = { name: name, phone: phone };
   await queueModel.updateOne(
     {
-      date: new Date().toLocaleDateString(),
+      date: "10/7/2022",
       "slots.time": slot,
     },
     {
@@ -115,7 +119,7 @@ exports.bookslot = async (req, res) => {
   );
 
   let slots = await queueModel.aggregate([
-    { $match: { date: new Date().toLocaleDateString() } },
+    { $match: { date: "10/7/2022" } },
     { $unwind: "$slots" },
     { $match: { "slots.time": slot } },
     {
@@ -143,7 +147,7 @@ exports.bookslot = async (req, res) => {
 
   await queueModel.updateOne(
     {
-      date: new Date().toLocaleDateString(),
+      date: "10/7/2022",
       "slots.time": slot,
     },
     {
@@ -156,7 +160,7 @@ exports.bookslot = async (req, res) => {
   len === 5 &&
     (await queueModel.updateOne(
       {
-        data: new Date().toLocaleDateString(),
+        data: "10/7/2022",
         "availableSlots.time": slot,
       },
       {
@@ -164,7 +168,7 @@ exports.bookslot = async (req, res) => {
       }
     ));
 
-  res.json({ len, message: "slot has been booked" });
+  res.json({ SUCCESS: true });
 };
 
 const generateQR = async (users) => {

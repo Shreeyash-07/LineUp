@@ -6,21 +6,24 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const Singup = () => {
   const navigate = useNavigate();
-    const [user,setUser] = useState({
-        name:'',email:'',password:'',phone:''
-    });
-    let name,value;
-    const handleInputs=(e)=>{
-        console.log(e);
-        name = e.target.name;
-        value = e.target.value;
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+    password: "",
+    phone: "",
+  });
+  let name, value;
+  const handleInputs = (e) => {
+    console.log(e);
+    name = e.target.name;
+    value = e.target.value;
 
-        setUser({...user,[name]:value});
-    }
+    setUser({ ...user, [name]: value });
+  };
 
-    const postData = async(e)=>{
-        e.preventDefault();
-        const {name,email,password,phone} = user;
+  const postData = async (e) => {
+    e.preventDefault();
+    const { name, email, password, phone } = user;
 
         const res = await fetch("/signup",{
           method : "POST",
@@ -32,15 +35,14 @@ const Singup = () => {
           })
         });
 
-        const data = await res.json();
-        if(data.status === 422 || !data){
-          window.alert('INVALID');
-        }else{
-          window.alert('SUCCESS');
-          navigate('/login');
-        }
+    const data = await res.json();
+    if (data.status === 422 || !data) {
+      window.alert("INVALID");
+    } else {
+      window.alert("SUCCESS");
+      navigate("/login");
     }
-
+  }
   const [isPasswordShow, setIsPasswordShow] = useState(false);
   const toggleIsPasswordShowValue = (e) => {
     e.preventDefault();
@@ -142,9 +144,5 @@ const Singup = () => {
     //     </form>
     //   </div>
     // </div>
-
-   
-  )
-}
-
-export default Singup
+  )}
+export default Singup;

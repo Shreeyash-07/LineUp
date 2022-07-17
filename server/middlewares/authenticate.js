@@ -1,6 +1,6 @@
-const jwt = require('jsonwebtoken');
-const User = require('../models/user');
-const { createError } = require('../utils/error');
+const jwt = require("jsonwebtoken");
+const User = require("../models/user");
+const { createError } = require("../utils/error");
 
 exports.Authenticate = async(req,res,next) =>{
     try{
@@ -24,17 +24,16 @@ exports.Authenticate = async(req,res,next) =>{
     }catch(err){
         res.status(401).json({SUCCESS:false,message:err});
         console.log(err);
-
     }
 }
 
- 
-exports.AuthenticateAdmin = (req,res,next) => {
-    Authenticate(req,res,next,()=>{
-        if(req.user.isAdmin){
-            next();
-        }else{
-            return next(createError(403,'You are not authorized admin'));
-        }
-    })
-}
+exports.AuthenticateAdmin = (req, res, next) => {
+  Authenticate(req, res, next, () => {
+    if (req.user.isAdmin) {
+      next();
+    } else {
+      return next(createError(403, "You are not authorized admin"));
+    }
+  }
+    )};
+
