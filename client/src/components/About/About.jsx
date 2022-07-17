@@ -8,22 +8,16 @@ const About = () => {
     const CalAboutPage = async () =>{
         try { 
             console.log('callabout')
-            const res = await fetch("/about",{
-                method:"GET",
-                headers:{
-                    Accept:"application/json",
-                    "Content-Type":"application/json"
-                },
-                credentials:"include"
-            });
+            const res = await fetch("/about");
 
               const data =await res.json();
-              console.log(data); 
+              setUserData(data.data);
+            //   console.log(userData); 
               if(!res.status === 200){
                 throw new Error(res.error);
             }
         } catch (err) {
-            console.log("err");
+            console.log(err);
             navigate('/login');
         }
     }
@@ -37,7 +31,7 @@ useEffect(()=>{
     <>
     <div className='container'>
         <form  method="get">
-                <h1>{userData}</h1>
+            <h1>{userData._id}</h1>
             <div className='row'>
                 <div className='col-md-6 pl-2'>
                     <div className='profiletab' id='mytab'>

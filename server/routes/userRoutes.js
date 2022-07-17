@@ -17,6 +17,6 @@ router.route("/signup").post(signup);
 router.route("/login").post(login);
 router.route("/getslots").get(Authenticate, getslots);
 router.route("/bookslot").put(bookslot);
-router.route("/about").get(about);
+router.route("/about").get(Authenticate,about);
 
 module.exports = router;

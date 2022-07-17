@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import useFetch from "../../Hooks/useFetch";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 const Slots = () => {
@@ -12,10 +11,12 @@ const Slots = () => {
   const slotBook = async (e) => {
     e.preventDefault();
     setSlotTime(e.target.getAttribute("value"));
+    console.log(slotTime)
     try {
       const res = await fetch("/bookslot", {
         method: "PUT",
         headers: {
+          "Accept": "application/json",
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
@@ -25,11 +26,6 @@ const Slots = () => {
         }),
       });
       const data = await res.json();
-      if (!data) {
-        alert("Not Booked");
-      } else {
-        alert("Booked");
-      }
     } catch (err) {
       console.log({ err: err });
     }
@@ -41,8 +37,11 @@ const Slots = () => {
       try {
         const res = await fetch("/getslots");
         const mainData = await res.json();
+        console.log(mainData);
         setSlots(mainData.slots);
+        console.log(mainData.slots);
         setUser(mainData.userObj);
+        console.log(mainData.userObj);
       } catch (err) {
         setError(err);
       }

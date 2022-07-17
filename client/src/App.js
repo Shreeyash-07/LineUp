@@ -24,6 +24,7 @@ function App() {
   // window.localStorage.setItem('timeIsset',false);
   return (
     <BrowserRouter>
+    <Navbar/>
       <Routes>
         <Route path="/admin" element={<Admin />} />
         <Route path="/" element={<Home />} />

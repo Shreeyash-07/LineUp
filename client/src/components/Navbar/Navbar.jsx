@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom'
 const Navbar = () => {
   return (
     <>
-    <nav className="navbar navbar-expand-lg bg-dark">
+    <nav className="navbar navbar-expand-lg bg-light">
   <div className="container-fluid">
     <NavLink className="navbar-brand" to="#">
     <NavLink className="navbar-brand" to="/">Line Up logo</NavLink>

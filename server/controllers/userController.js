@@ -79,31 +79,11 @@ exports.getslots = async (req, res, next) => {
   );
 };
 
-exports.about=(autheticate, async (req,res)=>{
+exports.about=(req,res)=>{
   console.log("hello my about");
-  try{
-    console.log("inside auth")
-    const token = req.cookies.jwtoken;
-    if(!token) {
-        return next(createError(401,'You are not authenticated'))
-    }
-    const verifyToken = jwt.verify(token,process.env.JWT_SECRET);
-    const user = await User.findOne({_id:verifyToken._id,"tokens.token":token});
-
-    if(!user) {throw new Error('User not found')}
-
-    req.token = token;
-    req.user = user;
-    req.userId= user._id;
-    console.log(user);
-    //set cookies and save data here 
-}catch(err){
-    res.status(401).json({SUCCESS:false,message:err});
-    console.log(err);
-
-}
-  res.send(req.user)
-});
+  let data = req.rootUser;
+  res.send({data});
+};
 
 exports.bookslot = async (req, res) => {
   let { slot, name, phone } = req.body;
@@ -139,7 +119,7 @@ exports.bookslot = async (req, res) => {
       },
     },
   ]);
-
+  console.log(slots);
   var users = JSON.stringify(slots[0].slots[0].users);
   let uri = await generateQR(JSON.stringify(users));
   // console.log(uri);
@@ -170,7 +150,6 @@ exports.bookslot = async (req, res) => {
 
   res.json({ SUCCESS: true });
 };
-
 const generateQR = async (users) => {
   try {
     return await QRCode.toDataURL(users);
