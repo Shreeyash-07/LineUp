@@ -1,62 +1,37 @@
-*{
+* {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
 }
-html{
+html {
   scroll-behavior: smooth;
 }
-body{
-  margin: 0 0 --head-height 0;
-  font-family: 'Montserrat',sans-serif;
-  font-size: 15px;
-  background-color: white;
-}
-h1,h2,h3,h4{
+
+h1,
+h2,
+h3,
+h4 {
   font-weight: 500;
 }
-:root{
-  --head-height : 48px;
-  
-  --big-font : 32px;
-  --h1-font  : 24px;
-  --h2-font  : 20px;
-  --h3-font  : 18px;
-  --normal-font :15px;
-  --small-font  :13px;
-  --smaller-font:12px;
+:root {
+  --head-height: 48px;
+
+  --big-font: 32px;
+  --h1-font: 24px;
+  --h2-font: 20px;
+  --h3-font: 18px;
+  --normal-font: 15px;
+  --small-font: 13px;
+  --smaller-font: 12px;
 }
-@media screen and (max-width:968px) {
-  :root{
-      --big-font : 48px;
-      --h1-font  : 36px;
-      --h2-font  : 24px;
-      --h3-font  : 20px;
-      --normal-font :16px;
-      --small-font  :14px;
-      --smaller-font:13px;
+@media screen and (max-width: 968px) {
+  :root {
+    --big-font: 48px;
+    --h1-font: 36px;
+    --h2-font: 24px;
+    --h3-font: 20px;
+    --normal-font: 16px;
+    --small-font: 14px;
+    --smaller-font: 13px;
   }
-}
-
-
-ul{
-  list-style:none;
-}
-a{
-  text-decoration: none;
-}
-img{
-  max-width: 100%;
-  height: auto;
-}
-
-.container{
-  max-width: 768px;
-  margin-left: 24px;
-  margin-right: 24px;
-}
-
-.grid{
-  display: grid;
-  gap: 24px;
 }

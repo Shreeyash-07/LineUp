@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Admin.scss";
-
+import { Container } from "semantic-ui-react";
 import Queue from "../Queue/Queue";
 import Error from "../Error/Error";
 const Admin = () => {
