@@ -107,7 +107,7 @@ exports.bookslot = async (req, res) => {
       },
     },
   ]);
-
+  console.log(slots);
   var users = JSON.stringify(slots[0].slots[0].users);
   let uri = await generateQR(JSON.stringify(users));
   // console.log(uri);

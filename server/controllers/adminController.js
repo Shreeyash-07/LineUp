@@ -61,7 +61,7 @@ exports.getTime = async (req, res, next) => {
   // console.log(new Date().toLocaleDateString());
   //   const slots = await queueModel.find({ date: "7/7/2022" });
   const newSlots = await queueModel.aggregate([
-    { $match: { date: new Date().toLocaleDateString() } },
+    { $match: { date: "10/7/2022" } },
     // {
     //   $unwind: {
     //     path: "$availableSlots",
