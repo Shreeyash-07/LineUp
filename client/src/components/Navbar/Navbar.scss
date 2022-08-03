@@ -1,0 +1,34 @@
+@import url('../../index.css');
+
+.header{
+    width: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 100;
+    background-color:transparent;
+    border-radius: 0 0 .5rem .5rem;
+}
+.nav{
+    max-width: 968px;
+    height: 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav_link{
+    color: #fff;
+    font-weight: 500;
+}
+.nav_logo{
+    color: #fff;
+    font-size: 1.3rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.nav_list{
+    display: flex;
+    column-gap: 2rem;
+}
