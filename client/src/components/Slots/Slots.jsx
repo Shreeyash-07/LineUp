@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Calendar from "react-calendar";
+
 import "react-calendar/dist/Calendar.css";
 const Slots = () => {
   const [slots, setSlots] = useState([]);
@@ -8,10 +9,27 @@ const Slots = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [date, setDate] = useState(new Date());
-  const slotBook = async (e) => {
+
+  let vartime = false;
+  const temp = async(e) =>{
     e.preventDefault();
     setSlotTime(e.target.getAttribute("value"));
-    console.log(slotTime)
+    if (slotTime !== ''){
+      vartime=true;
+    }
+  console.log({slot:slotTime,name:user.name,phone:user.phone})
+  vartime && slotBook()
+  }
+  const delEntry=async(e)=>
+  {
+    const SlotTime = e.target.getAttribute("value");
+    const res = await fetch("/getslots");
+    const mainData = await res.json();
+    console.log(SlotTime)
+    console.log(res)
+    console.log(mainData.userObj)
+  }
+  const slotBook = async () => {
     try {
       const res = await fetch("/bookslot", {
         method: "PUT",
@@ -73,10 +91,16 @@ const Slots = () => {
                     className=".col-md-6 .col-md-6"
                     key={index}
                     value={element.time}
-                    onClick={slotBook}
+                    onClick={temp}
                     disabled={element.isFull}
                   >
                     {element.isFull ? "true" : "false"}
+                  </button>
+                  <button 
+                  className=".col-md-6 .col-md-6"
+                  value={element.time}
+                  onClick={delEntry}>
+                    Delete 
                   </button>
                 </li>
               ))}

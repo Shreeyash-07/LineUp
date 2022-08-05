@@ -5,7 +5,6 @@ const { createError } = require("../utils/error");
 const QRCode = require("qrcode");
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser')
-const User = require('../models/user');
 
 
 exports.signup = async (req, res, next) => {
@@ -85,6 +84,7 @@ exports.about=(req,res)=>{
   res.send({data});
 };
 
+
 exports.bookslot = async (req, res) => {
   let { slot, name, phone } = req.body;
   let bookedSlotObj = { name: name, phone: phone };
@@ -97,6 +97,10 @@ exports.bookslot = async (req, res) => {
       $push: { "slots.$.users": bookedSlotObj },
     }
   );
+exports.cancel=async(req,res)=>{
+    let user = await queueModel.findOne({name:name , phone:phone, })
+    console.log(user)
+  }
 
   let slots = await queueModel.aggregate([
     { $match: { date: "10/7/2022" } },
@@ -148,7 +152,7 @@ exports.bookslot = async (req, res) => {
       }
     ));
 
-  res.json({ SUCCESS: true });
+    res.json({ SUCCESS: true });
 };
 const generateQR = async (users) => {
   try {
@@ -180,5 +184,5 @@ const sendToken = async (user, statusCode, res) => {
     .cookie("jwtoken", token, { httpOnly: true })
     .status(statusCode)
     .json({ success: true, token, user });
-};
-
+  };
+  
