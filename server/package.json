@@ -20,6 +20,7 @@
     "mongoose": "^6.3.6",
     "node-schedule": "^2.1.0",
     "nodemon": "^2.0.18",
-    "qrcode": "^1.5.0"
+    "qrcode": "^1.5.0",
+    "web-push": "^3.5.0"
   }
 }

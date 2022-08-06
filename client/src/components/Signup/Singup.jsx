@@ -69,7 +69,6 @@ const Singup = () => {
             <Form.Input
               icon="lock"
               iconPosition="left"
-              type="passowrd"
               label="Password"
               placeholder="Password"
               value={user.password}
@@ -78,7 +77,6 @@ const Singup = () => {
             <Form.Input
               icon="phone"
               iconPosition="left"
-              type="phone"
               label="Phone"
               placeholder="Phone"
               value={user.phone}

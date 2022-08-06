@@ -5,6 +5,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./components/Home/Home";
 import Admin from "./components/Admin/Admin";
 import Slots from "./components/Slots/Slots";
+import { Notifications } from "react-push-notification";
+import Notification from "./components/Notifications/Notification";
 
 function App() {
   const [started, setStarted] = useState(false);
@@ -19,12 +21,14 @@ function App() {
   // window.localStorage.setItem('timeIsset',false);
   return (
     <BrowserRouter>
+      <Notifications position="top-right" />
       <Routes>
         <Route path="/admin" element={<Admin />} />
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Singup />} />
         <Route path="/slots" element={<Slots />} />
+        <Route path="/notifications" element={<Notification />} />
       </Routes>
     </BrowserRouter>
   );
