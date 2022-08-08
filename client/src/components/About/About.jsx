@@ -13,9 +13,11 @@ const About = () => {
               const data =await res.json();
               console.log(data)
               setUserData(data);
+              console.log(userData.data)
             //   setUserData(data._id);
             //   console.log(userData); 
-            //   console.log(userData.data._id)
+              console.log(userData.data._id)
+
               if(!res.status === 200){
                 throw new Error(res.error);
             }
@@ -40,12 +42,11 @@ useEffect(()=>{
                         <div className='show active' id='tabpanel'>
                             <div className='row mt-3'>
                                 <div className='col-md-8'>
-            {/* <h1>{userData}</h1> */}
+            {/* <h1>{userData._id}</h1> */}
                                 <label>Name</label>
                                 </div>
                                 <div className='col-md-4'>
-                                {/* {userData.name} */}
-                                Name
+                                {userData.data.name}
                                 </div>
 
                             </div>
@@ -54,15 +55,15 @@ useEffect(()=>{
                                 <label>Email</label>
                                 </div>
                                 <div className='col-md-4'>
-                                {/* {userData.email} */}
-                                Email
+                                {userData.data.email}
+                                
                                 </div>
                             <div className='row mt-3'>
                                 <div className='col-md-8'>
-                                <label>USERID</label>
+                                <label>Phone</label>
                                 </div>
                                 <div className='col-md-4'>
-                                765432456
+                                {userData.data.phone}
                                 </div>
 
                             </div>

@@ -32,7 +32,7 @@ const Queue = () => {
               </p>
             </td>
             <td>
-              <UilQrcodeScan />
+             <UilQrcodeScan />
             </td>
             <td
               onClick={(e) => {

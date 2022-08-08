@@ -22,13 +22,25 @@ const Slots = () => {
   }
   const delEntry=async(e)=>
   {
-    const SlotTime = e.target.getAttribute("value");
-    const res = await fetch("/getslots");
-    const mainData = await res.json();
-    console.log(SlotTime)
-    console.log(res)
-    console.log(mainData.userObj)
+    try {
+      const res = await fetch("/cancel", {
+        method: "PUT",
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          slot: slotTime,
+          name: user.name,
+          phone: user.phone,
+        }),
+      });
+      const data = await res.json();
+    } catch (err) {
+      console.log({ err: err });
+    }
   }
+
   const slotBook = async () => {
     try {
       const res = await fetch("/bookslot", {

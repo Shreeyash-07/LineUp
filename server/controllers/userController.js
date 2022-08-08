@@ -85,25 +85,36 @@ exports.about=(req,res)=>{
 };
 
 
+exports.cancel=async(req,res)=>{
+    let { slot, name, phone } = req.body;
+    let user = await queueModel.updateOne({
+      date:"9/7/2022",
+      "slots.time": slot
+    },{
+      $pull:{
+        "slots.$.users":{name:name}
+      }
+    }
+    )
+    console.log(user)
+    res.send(user)
+}
+
+
 exports.bookslot = async (req, res) => {
   let { slot, name, phone } = req.body;
   let bookedSlotObj = { name: name, phone: phone };
   await queueModel.updateOne(
     {
-      date: "10/7/2022",
+      date: "9/7/2022",
       "slots.time": slot,
     },
     {
       $push: { "slots.$.users": bookedSlotObj },
     }
   );
-exports.cancel=async(req,res)=>{
-    let user = await queueModel.findOne({name:name , phone:phone, })
-    console.log(user)
-  }
-
   let slots = await queueModel.aggregate([
-    { $match: { date: "10/7/2022" } },
+    { $match: { date: "9/7/2022" } },
     { $unwind: "$slots" },
     { $match: { "slots.time": slot } },
     {
@@ -131,7 +142,7 @@ exports.cancel=async(req,res)=>{
 
   await queueModel.updateOne(
     {
-      date: "10/7/2022",
+      date: "9/7/2022",
       "slots.time": slot,
     },
     {
@@ -144,7 +155,7 @@ exports.cancel=async(req,res)=>{
   len === 5 &&
     (await queueModel.updateOne(
       {
-        data: "10/7/2022",
+        data: "9/7/2022",
         "availableSlots.time": slot,
       },
       {
