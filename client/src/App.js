@@ -5,23 +5,35 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./components/Home/Home";
 import Admin from "./components/Admin/Admin";
 import Slots from "./components/Slots/Slots";
-import { Notifications } from "react-push-notification";
 import Notification from "./components/Notifications/Notification";
+import { fetchToken, onMessageListener } from "./firebase-config";
 
 function App() {
+  const [isTokenFound, setTokenFound] = useState(false);
+  const [notification, setNotification] = useState({ title: "", body: "" });
+  const [getFcmToken, setFcmToken] = useState("");
   const [started, setStarted] = useState(false);
+
   useEffect(() => {
     const data = window.localStorage.getItem("timeIsset");
     if (data !== null) {
       console.log("inside");
       setStarted(true);
     }
-    console.log(started);
+    fetchToken(setTokenFound, setFcmToken);
+    // onMessageListener().then((payload) => {
+    //   setNotification({
+    //     title: payload.notification.title,
+    //     body: payload.notification.body,
+    //   }).catch((err) => {
+    //     console.log(err);
+    //   });
+    // });
   }, []);
   // window.localStorage.setItem('timeIsset',false);
   return (
     <BrowserRouter>
-      <Notifications position="top-right" />
+      <div>{getFcmToken}</div>
       <Routes>
         <Route path="/admin" element={<Admin />} />
         <Route path="/" element={<Home />} />

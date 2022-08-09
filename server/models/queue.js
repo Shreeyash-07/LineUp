@@ -12,12 +12,6 @@ const queueSchema = new mongoose.Schema(
         isFull: { type: Boolean, default: false },
       },
     ],
-    tempQueue: [
-      {
-        name: String,
-        phone: String,
-      },
-    ],
     slots: [
       {
         time: String,

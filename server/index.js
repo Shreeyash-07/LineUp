@@ -5,6 +5,14 @@ const schedule = require("node-schedule");
 const cookieParser = require("cookie-parser");
 const webpush = require("web-push");
 const cors = require("cors");
+const Schedule = require("./models/schedule");
+const Reminder = require("./models/reminder");
+const admin = require("firebase-admin");
+const servicAccount = require("./messaging-notification.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(servicAccount),
+});
 
 const publicKey =
   "BCCxcB9gbvtDhX3NXyYJ_q0FhDbIwqP0Gds_2_Evfe8blnlyA52_7qVnSkApfeMi1PtbLXniZvizLL6BuTeZfMM";
@@ -28,9 +36,38 @@ mongoose
   })
   .then(() => {
     console.log("Connected To MongoDB");
+    Schedule.watch([{ $match: { operationType: "delete" } }]).on(
+      "change",
+      async (data) => {
+        const id = data.documentKey._id;
+        const reminder = await Reminder.findOne({ _id: id }).populate({
+          path: "userId",
+          select: { name: 1, fcmToken: 1 },
+        });
+        const payload = {
+          notification: {
+            title: "Reminder",
+            body: reminder.message,
+          },
+        };
+        const options = {
+          priority: "high",
+        };
+        admin
+          .messaging()
+          .sendToDevice(reminder.userId.fcmToken, payload, options)
+          .then((response) => {
+            console.log("Push sent successfully", response);
+          })
+          .catch((error) => {
+            console.log("Error occurred while sending push", error);
+          });
+      }
+    );
   })
   .catch((err) => {
-    console.log("Connection failed with: " + err);
+    console.log("Error occurred with MongoDB: " + err);
+    process.exit(1);
   });
 
 app.use(express.json());
