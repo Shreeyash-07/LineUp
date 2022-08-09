@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { NavLink } from 'react-router-dom';
 import "./Queue.scss";
 import useFetch from "../../Hooks/useFetch";
 import { UilQrcodeScan } from "@iconscout/react-unicons";
@@ -7,8 +8,17 @@ import { UilAngleDown } from "@iconscout/react-unicons";
 
 const Queue = () => {
   const [Toggle, setToggle] = useState(false);
+  const [QrData,setQrData] =useState([]);
   const { data, loading, error } = useFetch("http://localhost:5000/admin");
   console.log(data);
+  const ShowQr =(value)=>{
+    console.log(value)
+    // setQrData(value);
+    // console.log(QrData)
+    // let qrdata = value.target.getAttribute("value")
+    // console.log(qrdata);
+    // console.log(qrdata)
+  }
   return (
     <table>
       <thead>
@@ -31,8 +41,24 @@ const Queue = () => {
                 {e.isFull === true ? "Full" : "Not Full"}
               </p>
             </td>
+            {/* {data.map((e,i)=>(
+              <td key={i}>
+                <NavLink to="{e.QRCode}">
+                <UilQrcodeScan />
+                </NavLink>
+                <img src={e.QRCode}  />
+                <button 
+                qr={e.QRCode}
+                onClick={ShowQr(e.QRCode)}>
+                <UilQrcodeScan />
+                </button>
+              </td>
+            ))} */}
             <td>
-             <UilQrcodeScan />
+              {/* <button onClick={window.open(<img src={e.QRCode} />)}> QR</button> */}
+            <img src={e.QRCode} width="500px" height="600px" />
+            {/* {e.QRCode} */}
+              {/* <UilQrcodeScan /> */}
             </td>
             <td
               onClick={(e) => {
