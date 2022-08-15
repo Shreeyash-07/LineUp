@@ -5,6 +5,7 @@ const {
   login,
   getslots,
   bookslot,
+  confirmID,
 } = require("../controllers/userController");
 
 const {
@@ -16,5 +17,6 @@ router.route("/signup").post(signup);
 router.route("/login").post(login);
 router.route("/getslots").get(Authenticate, getslots);
 router.route("/bookslot").put(bookslot);
+router.route("/checkqr").post(confirmID);
 
 module.exports = router;

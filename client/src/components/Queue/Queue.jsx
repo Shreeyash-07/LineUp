@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "./Queue.scss";
 import useFetch from "../../Hooks/useFetch";
+import Popup from "reactjs-popup";
+import "reactjs-popup/dist/index.css";
 import { UilQrcodeScan } from "@iconscout/react-unicons";
 import { UilAngleUp } from "@iconscout/react-unicons";
 import { UilAngleDown } from "@iconscout/react-unicons";
@@ -32,7 +34,9 @@ const Queue = () => {
               </p>
             </td>
             <td>
-              <UilQrcodeScan />
+              <Popup trigger={<UilQrcodeScan />} position="center">
+                <img src={e.QRCode} alt="" />
+              </Popup>
             </td>
             <td
               onClick={(e) => {
