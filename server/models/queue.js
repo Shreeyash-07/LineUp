@@ -21,6 +21,7 @@ const queueSchema = new mongoose.Schema(
             userId: { type: mongoose.Schema.Types.ObjectId, ref: user },
             name: String,
             phone: String,
+            isConfirmed: { type: Boolean, default: false },
           },
         ],
         tempQ: [

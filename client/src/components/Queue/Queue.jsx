@@ -14,6 +14,21 @@ const Queue = () => {
   const [Toggle, setToggle] = useState(false);
   const { data, loading, error } = useFetch("http://localhost:5000/admin");
   console.log(data);
+
+  function filterUsers(user, index) {
+    if (user.isConfirmed === false) {
+      console.log("inside filter");
+      return (
+        <tr key={index}>
+          <td>{user.name}</td>
+          <td>{user.phone}</td>
+          <td>{user.isConfiremd}</td>
+          <td>{user.token}</td>
+          <td>{user.status}</td>
+        </tr>
+      );
+    }
+  }
   return (
     <table>
       <thead>
@@ -64,16 +79,32 @@ const Queue = () => {
                   <th>Serving Status</th>
                 </tr>
               </thead>
-              {e.users.map((user, index) => (
+              {e.tempQ.map((user, index) => (
                 <tr key={index}>
                   <td>{user.name}</td>
                   <td>{user.phone}</td>
-                  {/* <td>{user._id}</td> */}
-                  <td>Confirmed</td>
-                  <td>A12</td>
-                  <Button primary>Being Serve</Button>
+                  <td>{user.isConfirmed ? "Confirmed" : "Not Confirmed"}</td>
+                  <td>{user.token}</td>
+                  <Button primary>
+                    {user.status === "Not served"
+                      ? "Start Serving"
+                      : user.status === "Being Serve"
+                      ? "Stop Serving"
+                      : "Completed"}
+                  </Button>
                 </tr>
               ))}
+              {e.users
+                .filter((user) => user.isConfirmed === false)
+                .map((user, index) => (
+                  <tr key={index}>
+                    <td>{user.name}</td>
+                    <td>{user.phone}</td>
+                    <td>{user.isConfirmed ? "Confirmed" : "Not Confirmed"}</td>
+                    <td>-</td>
+                    <Button primary>{!user.status && "Not served"}</Button>
+                  </tr>
+                ))}
             </table>
           </tr>
         ))}

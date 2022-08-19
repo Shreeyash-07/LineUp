@@ -86,6 +86,7 @@ exports.getTime = async (req, res, next) => {
         time: { $first: "$x.time" },
         isFull: { $first: "$x.isFull" },
         QRCode: { $first: "$x.QRCode" },
+        tempQ: { $first: "$x.tempQ" },
         users: { $first: "$x.users" },
       },
     },
