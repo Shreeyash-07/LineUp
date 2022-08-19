@@ -6,7 +6,8 @@ const {
   getslots,
   bookslot,
   about,
-  cancel
+  cancel,
+  getuserid
 } = require("../controllers/userController");
 
 const {
@@ -19,6 +20,7 @@ router.route("/login").post(login);
 router.route("/getslots").get(Authenticate, getslots);
 router.route("/bookslot").put(bookslot);
 router.route("/about").get(Authenticate,about);
-router.route("/cancel").put(Authenticate,cancel)
+router.route("/cancel").put(Authenticate,cancel);
+router.route("/getus").post(getuserid)
 
 module.exports = router;

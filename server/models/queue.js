@@ -22,6 +22,12 @@ const queueSchema = new mongoose.Schema(
             phone: String,
           },
         ],
+        tempQ : [
+          {
+            name:String,
+            phone: String
+          }
+        ]
       },
     ],
   },

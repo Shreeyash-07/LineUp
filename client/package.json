@@ -13,6 +13,7 @@
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
     "cookie-parser": "^1.4.6",
+    "js-cookie": "^3.0.1",
     "js-priority-queue": "^0.1.5",
     "qrcode.react": "^3.0.2",
     "react": "^18.1.0",

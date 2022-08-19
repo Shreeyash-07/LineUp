@@ -42,6 +42,7 @@ exports.login = async (req, res, next) => {
         return next(createError(401, "Credentials are incorrect"));
       } else {
         sendToken(user, 200, res);
+        // console.log(user._id);
         console.log(user._id);
       }
     } catch (error) {
@@ -82,6 +83,33 @@ exports.about=(req,res)=>{
   console.log("hello my about");
   let data = req.rootUser;
   res.send({data});
+};
+
+exports.getuserid = async(req,res)=>{
+   let {data} = req.body;
+   let userid =  req.cookies.userid;
+   console.log({userid})
+   console.log(req.cookies)
+   console.log({data})
+   data = JSON.parse(data)
+   data.forEach(async (element) => {
+     if (element._id===userid){
+      await queueModel.updateOne({
+        date:date,
+        "slots.time": slot
+       },
+      {
+        $push:{
+          "slots.$.tempQ":{
+            name:name,
+            phone:phone
+          }
+        }
+      })
+       return res.json({status:true})
+      }
+    });
+    return res.json({status:false})
 };
 
 
@@ -188,11 +216,13 @@ const findEmailDuplicates = async (email, res) => {
 
 const sendToken = async (user, statusCode, res) => {
   const token = await user.getSignedToken();
+  const userObj = user._id;
   // console.log(token);
   // this.tokens = this.tokens.concat({token:token})
   // console.log(this._id);
   res
     .cookie("jwtoken", token, { httpOnly: true })
+    .cookie("userid", user._id)
     .status(statusCode)
     .json({ success: true, token, user });
   };
