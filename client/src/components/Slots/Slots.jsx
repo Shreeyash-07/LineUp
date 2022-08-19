@@ -20,8 +20,7 @@ const Slots = () => {
         },
         body: JSON.stringify({
           slot: slotTime,
-          name: user.name,
-          phone: user.phone,
+          id: user,
         }),
       });
       const data = await res.json();
@@ -42,7 +41,7 @@ const Slots = () => {
         const res = await fetch("/getslots");
         const mainData = await res.json();
         setSlots(mainData.slots);
-        setUser(mainData.userObj);
+        setUser(mainData.userid);
       } catch (err) {
         setError(err);
       }

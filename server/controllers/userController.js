@@ -40,7 +40,6 @@ exports.login = async (req, res, next) => {
         return next(createError(401, "Credentials are incorrect"));
       } else {
         sendToken(user, 200, res);
-        console.log(user._id);
       }
     } catch (error) {
       // res.status(500).json({success:false,desc:'Error'+error})
@@ -52,7 +51,7 @@ exports.login = async (req, res, next) => {
 exports.getslots = async (req, res, next) => {
   queueModel.find(
     {
-      date: "10/7/2022",
+      date: "19/8/2022",
       "availableSlots.isFull": { $eq: 0 },
     },
     { _id: 0, date: 0, slots: 0, __v: 0 },
@@ -67,21 +66,21 @@ exports.getslots = async (req, res, next) => {
       //     timeArr.push(element.time);
       //   }
       // });
-      const userObj = {
-        name: req.rootUser.name,
-        phone: req.rootUser.phone,
-      };
-      res.status(200).json({ slots, userObj });
+
+      const userid = req.rootUser._id;
+
+      res.status(200).json({ slots, userid });
     }
   );
 };
 
 exports.bookslot = async (req, res) => {
-  let { slot, name, phone } = req.body;
-  let bookedSlotObj = { name: name, phone: phone };
+  let { slot, id } = req.body;
+  const user = await userModel.findById(id);
+  let bookedSlotObj = { userId: id, name: user.name, phone: user.phone };
   await queueModel.updateOne(
     {
-      date: "10/7/2022",
+      date: "19/8/2022",
       "slots.time": slot,
     },
     {
@@ -90,7 +89,7 @@ exports.bookslot = async (req, res) => {
   ); //Fetching Queue
 
   let slots = await queueModel.aggregate([
-    { $match: { date: "10/7/2022" } },
+    { $match: { date: "19/8/2022" } },
     { $unwind: "$slots" },
     { $match: { "slots.time": slot } },
     {
@@ -111,13 +110,19 @@ exports.bookslot = async (req, res) => {
     },
   ]); //Getting users array to recreate QR
 
-  console.log(slots);
-  var users = JSON.stringify(slots[0].slots[0].users);
-  let uri = await generateQR(JSON.stringify(users));
+  let users = slots[0].slots[0].users;
+  let usersForQR = [];
+  users.forEach((user) => {
+    usersForQR.push(user.userId);
+  });
+
+  console.log(usersForQR);
+
+  let uri = await generateQR(JSON.stringify(usersForQR));
 
   await queueModel.updateOne(
     {
-      date: "10/7/2022",
+      date: "19/8/2022",
       "slots.time": slot,
     },
     {
@@ -125,12 +130,17 @@ exports.bookslot = async (req, res) => {
     }
   ); //Updating QR after booking slot
 
+  await userModel.findByIdAndUpdate(id, {
+    isBooked: true,
+    currentAppointment: slot,
+  });
+
   let len = slots[0].slots[0].count;
 
   len === 5 &&
     (await queueModel.updateOne(
       {
-        data: "10/7/2022",
+        data: "19/8/2022",
         "availableSlots.time": slot,
       },
       {
@@ -138,6 +148,8 @@ exports.bookslot = async (req, res) => {
       }
     )); //check if length is 5 then disable the slot
   console.log(req.cookies);
+
+  //setting notification
   let [leftHalfOfTheTime, rightHalfOfTheTime] = slot.split("-");
   console.log(leftHalfOfTheTime);
   let [hrs, min] = leftHalfOfTheTime.split(":");
@@ -147,16 +159,14 @@ exports.bookslot = async (req, res) => {
   } else {
     min = parseInt(min) - 30;
   }
-  // console.log({ time: hrs + ":" + min });
+  console.log({ time: hrs + ":" + min });
   let yr = new Date().getFullYear(),
     dt = new Date().getDate(),
     mon = new Date().getMonth();
 
-  //August 19, 1975 23:15:30 GMT+07:00
-  //Mon Aug 15 2022 00:50:00 GMT+0530 (India Standard Time)
   const reminder = await reminderModel.create({
     userId: req.cookies.userID,
-    message: "Its times",
+    message: "Jaa re tera time aa gaya hai",
     time: new Date(yr, mon, dt, hrs, min, 00),
   }); //Create reminder for user
 
@@ -173,7 +183,7 @@ exports.bookslot = async (req, res) => {
 
 const generateQR = async (users) => {
   try {
-    return await QRCode.toDataURL(users);
+    return await QRCode.toDataURL(users, { width: 500, margin: 3 });
   } catch (err) {
     return err;
   }
@@ -192,27 +202,82 @@ const findEmailDuplicates = async (email, res) => {
   }
 };
 
-exports.confirmID = (req, res) => {
+exports.confirmID = async (req, res) => {
   const { data } = req.body;
+  console.log(data);
   const userID = req.cookies.userID;
-  const userArray = JSON.parse(data);
-  userArray.forEach((element) => {
-    console.log(element._id);
-    if (element._id === userID) {
-      console.log("name is there");
-    }
-  });
-  res.json({ satatus: true });
+
+  // console.log(req.cookies.userID);
+  function findId(id) {
+    return id === userID;
+  }
+  const x = data.find(findId);
+  if (x) {
+    const user = await userModel.findById(userID);
+    let slot = user.currentAppointment;
+    let slots = await queueModel.aggregate([
+      { $match: { date: "19/8/2022" } },
+      { $unwind: "$slots" },
+      { $match: { "slots.time": slot } },
+      {
+        $project: {
+          "slots.time": "$slots.time",
+          "slots.count": { $size: "$slots.tempQ" },
+        },
+      },
+    ]);
+    let timeSlot = slots[0].slots.time;
+    let tempQcount = slots[0].slots.count;
+    let [leftside, rightside] = timeSlot.split("-");
+    let [hr, min] = leftside.split(":");
+    let [hr1, min1] = rightside.split(":");
+    const token = hr + "_" + hr1 + "_" + tempQcount;
+    let userObj = {
+      userId: userID,
+      name: user.name,
+      phone: user.phone,
+      token: token,
+      isConfirmed: true,
+    };
+    await queueModel.updateOne(
+      { date: "19/8/2022", "slots.time": slot },
+      { $push: { "slots.$.tempQ": userObj } }
+    );
+  }
+  return res.json({ status: true });
 };
 
 const sendToken = async (user, statusCode, res) => {
   const token = await user.getSignedToken();
+  const isbooked = user.isBooked;
+  console.log(user._id);
   // console.log(token);
   // this.tokens = this.tokens.concat({token:token})
   // console.log(this._id);
   res
     .cookie("jwtoken", token, { httpOnly: true })
     .cookie("userID", user._id)
+    .cookie("Booked", isbooked, { overwrite: true })
     .status(statusCode)
     .json({ success: true, token, user });
 };
+
+// const res = await queueModel.findOneAndUpdate(
+//   {
+//     date: "19/8/2022",
+//     "slots.time": slot,
+//     "slots.$.users.userId": userID,
+//   },
+//   {
+//     $set: { "slots.$.users.0.isConfirmed": true },
+//   }
+// );
+
+// {
+//         $group: {
+//           _id: "$_id",
+//           slots: {
+//             $push: "$slots",
+//           },
+//         },
+//       },

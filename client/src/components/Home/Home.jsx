@@ -5,9 +5,11 @@ import { Button } from "semantic-ui-react";
 import QrScanLogo from "../../images/qr-code.png";
 import Navbar from "../Navbar/Navbar";
 import Tabs from "../Tabs/Tabs";
+import { useNavigate } from "react-router-dom";
 import "./Home.scss";
 
 const Home = () => {
+  const navigate = useNavigate();
   const [isQrClick, setQrCLick] = useState(false);
   const [data, setData] = useState("No result");
 
@@ -29,14 +31,20 @@ const Home = () => {
     });
     const resdata = await res.json();
     console.log(resdata);
+    if (resdata.status === true) {
+      alert("Checked");
+      navigate("/status");
+    } else {
+      alert("Check failed");
+    }
   };
   return (
     <>
       <QrReader
+        onScan={checkId}
         onResult={(result, error) => {
           if (!!result) {
             setData(JSON.parse(result?.text));
-            console.log(data);
 
             if (!!error) {
               console.info(error);
@@ -45,27 +53,13 @@ const Home = () => {
         }}
         style={{ width: "500%" }}
       />
-      <p>{data}</p>
+
+      {/* <p>{data}</p> */}
       <form method="POST" onSubmit={checkId}>
-        {data !== "No Result" && <Button primary>Submit</Button>}
+        {data !== "No result" && <Button primary>Submit</Button>}
       </form>
     </>
   );
 };
 
 export default Home;
-
-// {<QrReader
-//         onResult={(result, error) => {
-//           if (!!result) {
-//             setData(JSON.parse(result?.text));
-//             console.log(data)
-//           }
-
-//           if (!!error) {
-//             console.info(error);
-//           }
-//         }}
-//         style={{ width: '500%' }}
-//       />
-//       <p>{data}</p>}

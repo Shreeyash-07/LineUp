@@ -23,10 +23,7 @@ exports.setTime = async (req, res, next) => {
     hrs = parseInt(hrs) + 1;
     min = min - 60;
   }
-  var user = [{ name: "Sanket", phone: "34234324" }, { name: "Shree" }];
 
-  const uri = await generateQR(user);
-  console.log(uri);
   for (var i = 0; i < totalSlots; i++) {
     var nexthr = parseInt(hrs) + 1;
     var st = hrs + ":" + min + "-" + nexthr + ":" + min;
@@ -34,6 +31,8 @@ exports.setTime = async (req, res, next) => {
       time: hrs + ":" + min + "-" + nexthr + ":" + min,
       isFull: false,
     });
+    var user = [{ time: hrs + ":" + min + "-" + nexthr + ":" + min }];
+    const uri = await generateQR(user);
     slotss.push({
       time: hrs + ":" + min + "-" + nexthr + ":" + min,
       QRCode: uri,
@@ -61,7 +60,7 @@ exports.getTime = async (req, res, next) => {
   // console.log(new Date().toLocaleDateString());
   //   const slots = await queueModel.find({ date: "7/7/2022" });
   const newSlots = await queueModel.aggregate([
-    { $match: { date: "10/7/2022" } },
+    { $match: { date: "19/8/2022" } },
     // {
     //   $unwind: {
     //     path: "$availableSlots",

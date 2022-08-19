@@ -6,6 +6,7 @@
 .pnp.js
 /src/firebase-config.js
 /public/firebase-messaging-sw.js
+
 # testing
 /coverage
 

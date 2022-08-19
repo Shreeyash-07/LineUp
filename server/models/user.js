@@ -29,6 +29,16 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isBooked: {
+      type: Boolean,
+      default: false,
+    },
+    currentAppointment: {
+      time: String,
+    },
+    appointmentHistory: {
+      type: Array,
+    },
     tokens: [
       {
         token: {
