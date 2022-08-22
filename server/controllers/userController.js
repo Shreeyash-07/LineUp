@@ -30,22 +30,28 @@ exports.login = async (req, res, next) => {
   const { email, password } = req.body;
   let user = await userModel.findOne({ email: email }).select("+password");
   if (!user) {
-    // res.status(422).json({message:'User not found'});
-    return next(createError(422, "User not found"));
+    return res.status(422).json({ success: false, message: "User not found" });
+    // return next(createError(422, "User not found"));
   } else {
     try {
       const isMatch = await user.matchPassword(password);
       if (!isMatch) {
-        // res.status(401).json({message:'Credentials are incorrect'});
-        return next(createError(401, "Credentials are incorrect"));
+        return res
+          .status(401)
+          .json({ success: false, message: "Credentials are incorrect" });
+        // return next(createError(401, "Credentials are incorrect"));
       } else {
         sendToken(user, 200, res);
       }
     } catch (error) {
-      // res.status(500).json({success:false,desc:'Error'+error})
-      next(error);
+      return res.status(500).json({ success: false, desc: "Error" + error });
+      // next(error);
     }
   }
+};
+
+exports.logout = async (req, res) => {
+  res.clearCookie("jwtoken").json({ success: true });
 };
 
 exports.getslots = async (req, res, next) => {
@@ -72,6 +78,12 @@ exports.getslots = async (req, res, next) => {
       res.status(200).json({ slots, userid });
     }
   );
+};
+
+exports.getestime = async (req, res) => {
+  let user = await userModel.findById(req.cookies.userID);
+  let estimatedTime = user.currentAppointment.estimatedTime;
+  res.json({ estimatedTime });
 };
 
 exports.bookslot = async (req, res) => {
@@ -132,7 +144,7 @@ exports.bookslot = async (req, res) => {
 
   await userModel.findByIdAndUpdate(id, {
     isBooked: true,
-    currentAppointment: slot,
+    $set: { "currentAppointment.time": slot },
   });
 
   let len = slots[0].slots[0].count;
@@ -214,7 +226,8 @@ exports.confirmID = async (req, res) => {
   const x = data.find(findId);
   if (x) {
     const user = await userModel.findById(userID);
-    let slot = user.currentAppointment;
+    let slot = user.currentAppointment.time;
+    console.log({ slot: slot });
     let slots = await queueModel.aggregate([
       { $match: { date: "19/8/2022" } },
       { $unwind: "$slots" },
@@ -239,6 +252,22 @@ exports.confirmID = async (req, res) => {
       token: token,
       isConfirmed: true,
     };
+    console.log({ userid: userID, token: token });
+    userModel
+      .findByIdAndUpdate(userID, {
+        $set: {
+          "currentAppointment.token": token,
+          "currentAppointment.estimatedTime": new Date(
+            new Date().getTime() + 15 * 60000 * tempQcount
+          ),
+        },
+      })
+      .then((resp) => {
+        console.log({ res: resp });
+      })
+      .catch((err) => {
+        console.log({ err: err });
+      });
     await queueModel.updateOne(
       { date: "19/8/2022", "slots.time": slot },
       { $push: { "slots.$.tempQ": userObj } }

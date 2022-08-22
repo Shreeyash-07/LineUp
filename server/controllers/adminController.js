@@ -124,3 +124,40 @@ const generateQR = async (user) => {
     return err;
   }
 };
+
+exports.startServing = async (req, res) => {
+  const { id, slot } = req.body;
+  console.log({ userid: id, slot: slot });
+  await queueModel.findOneAndUpdate(
+    {
+      data: "20/8/2022",
+      "slots.time": slot,
+      "slots.$.tempQ.userId": id,
+    },
+    {
+      $set: {
+        "slots.$.tempQ.0.status": "Being Serve",
+        "slots.$.tempQ.0.isBeingServe": true,
+      },
+    }
+  );
+  res.json({ status: true });
+};
+
+exports.stopServing = async (req, res) => {
+  const { id, slot } = req.body;
+  await queueModel.findOneAndUpdate(
+    {
+      data: "20/8/2022",
+      "slots.time": slot,
+      "slots.$.tempQ.userId": id,
+    },
+    {
+      $set: {
+        "slots.$.tempQ.0.status": "Served",
+        "slots.$.tempQ.0.isBeingServe": false,
+      },
+    }
+  );
+  res.json({ status: true });
+};

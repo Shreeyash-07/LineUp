@@ -35,6 +35,8 @@ const userSchema = new mongoose.Schema(
     },
     currentAppointment: {
       time: String,
+      token: String,
+      estimatedTime: Date,
     },
     appointmentHistory: {
       type: Array,

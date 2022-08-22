@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import { Button, Divider, Form, Grid, Segment } from "semantic-ui-react";
 const Login = () => {
   const adminEmail = "admin";
@@ -8,9 +8,11 @@ const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
 
   const PostData = async (e) => {
     e.preventDefault();
+    setError(false);
     console.log("Hello from login");
     if (email === adminEmail && password === adminPassword) {
       window.alert("Welcome Admin");
@@ -27,49 +29,91 @@ const Login = () => {
         }),
       });
 
-      const data = res.json();
-
-      if (data.status === 401 || !data) {
-        window.alert("INVALID");
+      const data = await res.json();
+      console.log({ loginsuccess: data });
+      if (data.success === false || !data) {
+        setError(true);
+        return;
       } else {
-        window.alert("SUCCESS");
         navigate("/");
       }
     }
   };
 
   return (
-    <Segment placeholder>
-      <Grid columns={2} relaxed="very" stackable>
-        <Grid.Column>
-          <Form method="POST" onSubmit={PostData}>
-            <Form.Input
-              icon="user"
-              iconPosition="left"
+    <div className="container-fluid main-container m-auto shadow p-3 rounded">
+      <div className="text-center p-3 ">
+        <h1>Login</h1>
+      </div>
+      {error && (
+        <div class="alert alert-danger" role="alert">
+          Login failed, Incorrect Credentials
+        </div>
+      )}
+      <form>
+        <div className="row mb-3">
+          <label
+            htmlFor="email"
+            className="col-sm-3 col-form-label"
+            style={{ fontSize: "15px", fontWeight: "800" }}
+          >
+            Email:
+          </label>
+          <div className="col-sm-9">
+            <input
               type="email"
-              label="Email"
-              placeholder="Email"
+              className="form-control"
+              id="email"
+              name="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
+              style={{ fontFamily: "inherit", border: "none" }}
             />
-            <Form.Input
-              icon="lock"
-              iconPosition="left"
-              type="passowrd"
-              label="Password"
-              placeholder="Password"
+          </div>
+        </div>
+        <div className="row mb-3">
+          <label
+            htmlFor="password"
+            className="col-sm-3 col-form-label"
+            style={{ fontSize: "15px", fontWeight: "800" }}
+          >
+            Password:
+          </label>
+          <div className="col-sm-9">
+            <input
+              type="password"
+              className="form-control"
+              id="password"
+              name="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+              style={{
+                fontFamily: "inherit",
+                border: "none",
+              }}
             />
-            <Button content="Login" primary />
-          </Form>
-        </Grid.Column>
-        <Grid.Column verticalAlign="middle">
-          <Button content="Sign up" icon="signup" size="big"></Button>
-        </Grid.Column>
-      </Grid>
-      <Divider vertical>Or</Divider>
-    </Segment>
+          </div>
+        </div>
+
+        <div className="text-center">
+          <NavLink to="/signup">New User?Register here</NavLink>
+          <br />
+          <button
+            type="submit"
+            className="btn btn-primary m-3"
+            name="login"
+            id="login"
+            value="submit"
+            onClick={PostData}
+            style={{ fontFamily: "inherit" }}
+          >
+            Login
+          </button>
+        </div>
+      </form>
+    </div>
   );
 };
 
