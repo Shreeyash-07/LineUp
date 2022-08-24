@@ -58,6 +58,7 @@ exports.setTime = async (req, res, next) => {
 };
 exports.getTime = async (req, res, next) => {
   const response = await queueModel.findOne({ date: new Date().toLocaleDateString() });
+  console.log(new Date().toLocaleDateString() )
   if (response) {
     console.log("Date Exist")
   }

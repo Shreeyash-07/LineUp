@@ -59,9 +59,9 @@ const Slots = () => {
 
   return (
     <>
-      <div>
+      {/* <div>
         <TodayDate />
-      </div>
+      </div> */}
       <br />
       <ol class="list-group">
         <li

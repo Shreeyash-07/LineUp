@@ -50,14 +50,18 @@ exports.login = async (req, res, next) => {
   }
 };
 
-exports.logout = async (req, res) => {
-  res.clearCookie("jwtoken").json({ success: true });
+exports.logout = (req, res) => {
+  res.clearCookie().json({success:true});
+  // res.clearCookie("Booked")
+  // res.clearCookie("jwtoken")
+  // res.json({sucsess : true})
+  // res.clearCookie("userID").json({ success: true });
 };
 
 exports.getslots = async (req, res, next) => {
   queueModel.find(
     {
-      date: "19/8/2022",
+      date: new Date().toLocaleDateString(),
       "availableSlots.isFull": { $eq: 0 },
     },
     { _id: 0, date: 0, slots: 0, __v: 0 },

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, createContext } from "react";
 import Login from "./components/Login/Login";
 import Singup from "./components/Signup/Singup";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
@@ -17,6 +17,7 @@ import TodayDate from "./components/TodayDate/TodayDate";
 import Scanner from "./components/Scanner/Scanner";
 import Modal1 from "./components/Modal/Modal1";
 import Modal2 from "./components/Modal/Modal2";
+
 
 function App() {
   const [isTokenFound, setTokenFound] = useState(false);
@@ -60,7 +61,6 @@ function App() {
         <Route path="/datatable2" element={<Datatable2 />} />
         <Route path="/datatable" element={<Datatable />} />
         <Route path="/Modal1" element={<Modal1 />}/>
-        <Route path="/Modal2" element={<Modal2 />}/>
         <Route
           exact
           path="/slots"
