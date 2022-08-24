@@ -29,6 +29,18 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isBooked: {
+      type: Boolean,
+      default: false,
+    },
+    currentAppointment: {
+      time: String,
+      token: String,
+      estimatedTime: Date,
+    },
+    appointmentHistory: {
+      type: Array,
+    },
     tokens: [
       {
         token: {
@@ -38,6 +50,10 @@ const userSchema = new mongoose.Schema(
         },
       },
     ],
+    fcmToken: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );

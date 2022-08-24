@@ -23,10 +23,7 @@ exports.setTime = async (req, res, next) => {
     hrs = parseInt(hrs) + 1;
     min = min - 60;
   }
-  var user = [{ name: "Sanket", phone: "34234324" }, { name: "Shree" }];
 
-  const uri = await generateQR(user);
-  console.log(uri);
   for (var i = 0; i < totalSlots; i++) {
     var nexthr = parseInt(hrs) + 1;
     var st = hrs + ":" + min + "-" + nexthr + ":" + min;
@@ -34,6 +31,8 @@ exports.setTime = async (req, res, next) => {
       time: hrs + ":" + min + "-" + nexthr + ":" + min,
       isFull: false,
     });
+    var user = [{ time: hrs + ":" + min + "-" + nexthr + ":" + min }];
+    const uri = await generateQR(user);
     slotss.push({
       time: hrs + ":" + min + "-" + nexthr + ":" + min,
       QRCode: uri,
@@ -58,39 +57,30 @@ exports.setTime = async (req, res, next) => {
   return res.json({ date: "set successfully" }).status(200); //json({message:aslots,test:parseInt(toSetMin)+1})
 };
 exports.getTime = async (req, res, next) => {
-  // console.log(new Date().toLocaleDateString());
-  //   const slots = await queueModel.find({ date: "7/7/2022" });
-  const newSlots = await queueModel.aggregate([
-    { $match: { date: "10/7/2022" } },
-    // {
-    //   $unwind: {
-    //     path: "$availableSlots",
-    //     includeArrayIndex: "index_1",
-    //   },
-    // },
-    // {
-    //   $unwind: {
-    //     path: "$slots",
-    //     includeArrayIndex: "index_2",
-    //   },
-    // },
-    {
-      $project: {
-        x: {
-          $zip: { inputs: ["$availableSlots", "$slots"] },
-        },
-      },
-    },
-    { $unwind: "$x" },
-    {
-      $project: {
-        time: { $first: "$x.time" },
-        isFull: { $first: "$x.isFull" },
-        QRCode: { $first: "$x.QRCode" },
-        users: { $first: "$x.users" },
-      },
-    },
-  ]);
+  const response = await queueModel.findOne({ date: new Date().toLocaleDateString() });
+  if (response) {
+    console.log("Date Exist")
+  }
+  // const newSlots = await queueModel.aggregate([
+  //   { $match: { date: "19/8/2022" } },
+  //   {
+  //     $project: {
+  //       x: {
+  //         $zip: { inputs: ["$availableSlots", "$slots"] },
+  //       },
+  //     },
+  //   },
+  //   { $unwind: "$x" },
+  //   {
+  //     $project: {
+  //       time: { $first: "$x.time" },
+  //       isFull: { $first: "$x.isFull" },
+  //       QRCode: { $first: "$x.QRCode" },
+  //       tempQ: { $first: "$x.tempQ" },
+  //       users: { $first: "$x.users" },
+  //     },
+  //   },
+  // ]);
   //   let slts = slots[0].availableSlots;
   return res.json(newSlots);
 };
@@ -123,4 +113,41 @@ const generateQR = async (user) => {
   } catch (err) {
     return err;
   }
+};
+
+exports.startServing = async (req, res) => {
+  const { id, slot } = req.body;
+  console.log({ userid: id, slot: slot });
+  await queueModel.findOneAndUpdate(
+    {
+      data: "20/8/2022",
+      "slots.time": slot,
+      "slots.$.tempQ.userId": id,
+    },
+    {
+      $set: {
+        "slots.$.tempQ.0.status": "Being Serve",
+        "slots.$.tempQ.0.isBeingServe": true,
+      },
+    }
+  );
+  res.json({ status: true });
+};
+
+exports.stopServing = async (req, res) => {
+  const { id, slot } = req.body;
+  await queueModel.findOneAndUpdate(
+    {
+      data: "20/8/2022",
+      "slots.time": slot,
+      "slots.$.tempQ.userId": id,
+    },
+    {
+      $set: {
+        "slots.$.tempQ.0.status": "Served",
+        "slots.$.tempQ.0.isBeingServe": false,
+      },
+    }
+  );
+  res.json({ status: true });
 };
