@@ -3,6 +3,8 @@ import useFetch from "../../Hooks/useFetch";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import TodayDate from "../TodayDate/TodayDate";
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
 const Slots = () => {
   let datee = new Date().getDate();
@@ -12,6 +14,9 @@ const Slots = () => {
 
   const [slots, setSlots] = useState([]);
   const [user, setUser] = useState();
+  const [Cookies, setCookies] = useCookies([]);
+  const [size, setSize] = useState();
+  const navigate = useNavigate();
   const [slotTime, setSlotTime] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -40,8 +45,12 @@ const Slots = () => {
       console.log({ err: err });
     }
   };
-
+  
   useEffect(() => {
+    const size = Object.keys(Cookies).length;
+    console.log(Cookies);
+    setSize(size);
+    console.log(size);
     const fetchData = async () => {
       setLoading(true);
       try {
@@ -54,6 +63,10 @@ const Slots = () => {
       }
       setLoading(false);
     };
+    
+    if(size === 0){
+      navigate("/login")
+    }
     fetchData();
   }, []);
 

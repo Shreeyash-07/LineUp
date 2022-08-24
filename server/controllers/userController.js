@@ -50,12 +50,21 @@ exports.login = async (req, res, next) => {
   }
 };
 
-exports.logout = (req, res) => {
-  res.clearCookie().json({success:true});
-  // res.clearCookie("Booked")
-  // res.clearCookie("jwtoken")
-  // res.json({sucsess : true})
-  // res.clearCookie("userID").json({ success: true });
+exports.logout = async (req, res) => {
+  console.log("del");
+  res.clearCookie("Booked")
+  res.clearCookie("userID")
+  res.clearCookie("jwtoken")
+  res.status(200).json({sucess:"true"})
+}
+
+exports.properRouting = async (req, res) => {
+  let user = await userModel.findById(req.cookies.userID);
+  console.log(user)
+  res.json({success:true,user:user});
+  // res.json(user);
+  // const query = await userModel.find(userid);
+  // res.json({booked:query.isBooked})
 };
 
 exports.getslots = async (req, res, next) => {
@@ -290,8 +299,8 @@ const sendToken = async (user, statusCode, res) => {
   res
     .cookie("jwtoken", token, { httpOnly: true })
     .cookie("userID", user._id)
-    .cookie("Booked", isbooked, { overwrite: true })
-    .status(statusCode)
+    // .cookie("Booked", isbooked, { overwrite: true })
+    // .status(statusCode)
     .json({ success: true, token, user });
 };
 

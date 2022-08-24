@@ -8,6 +8,7 @@ const {
   confirmID,
   logout,
   getestime,
+  properRouting,
 } = require("../controllers/userController");
 
 const {
@@ -18,9 +19,10 @@ const {
 router.route("/signup").post(signup);
 router.route("/login").post(login);
 router.route("/getslots").get(Authenticate, getslots);
-router.route("/bookslot").put(bookslot);
+router.route("/bookslot").put(Authenticate, bookslot);
 router.route("/checkqr").post(confirmID);
 router.route("/logout").get(logout);
 router.route("/getestime").get(getestime);
+router.route("/properRouting").get(properRouting);
 
 module.exports = router;

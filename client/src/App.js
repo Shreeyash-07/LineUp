@@ -26,7 +26,7 @@ function App() {
   const [cookies, setCookies] = useCookies([]);
   const [isAppointmentBooked, setIsAppointmentBooked] = useState();
   useEffect(() => {
-    setIsAppointmentBooked(cookies.Booked);
+    // setIsAppointmentBooked(cookies.Booked);
     console.log(isAppointmentBooked);
     const data = window.localStorage.getItem("timeIsset");
     if (data !== null) {
@@ -56,22 +56,19 @@ function App() {
           exact
           path="/slots"
           element={
-            !isAppointmentBooked ? (
+            
               <Slots />
-            ) : (
-              <Navigate replace to={"/status"} />
-            )
+            
           }
         />
         <Route
           exact
           path="/status"
           element={
-            isAppointmentBooked ? (
+            
               <Status />
-            ) : (
-              <Navigate replace to={"/slots"} />
-            )
+            
+              
           }
         />
       </Routes>
