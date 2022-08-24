@@ -15,6 +15,9 @@ import Navbar from "./components/Navbar/Navbar";
 import Stepper from "./components/Stepper/Stepper";
 import TodayDate from "./components/TodayDate/TodayDate";
 import Scanner from "./components/Scanner/Scanner";
+import Modal1 from "./components/Modal/Modal1";
+import Modal2 from "./components/Modal/Modal2";
+
 function App() {
   const [isTokenFound, setTokenFound] = useState(false);
   const [notification, setNotification] = useState({ title: "", body: "" });
@@ -56,6 +59,8 @@ function App() {
         <Route path="/signup" element={<Singup />} />
         <Route path="/datatable2" element={<Datatable2 />} />
         <Route path="/datatable" element={<Datatable />} />
+        <Route path="/Modal1" element={<Modal1 />}/>
+        <Route path="/Modal2" element={<Modal2 />}/>
         <Route
           exact
           path="/slots"

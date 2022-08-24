@@ -1,35 +1,21 @@
 import React from "react";
+import iphone from "./img/newiphone.svg"
 const Landing = () => {
   return (
-    <div>
+    <>
       <header class="masthead">
         <div class="container px-5">
-          <div class="row gx-5 align-items-center">
-            <div class="col-lg-6">
+          <div class="row gx-5 align-items-center m-3  ">
+            <div class="col-lg-6" >
               <div class="mb-5 mb-lg-0 text-center text-lg-start">
-                <h1 class="display-1 lh-1 mb-3">
-                  Showcase your app beautifully.
+                <h1 class="display-1 lh-1 mb-3 d-flex "
+                  style={{ fontSize: "80px", fontWeight: "650" }}>
+                  Quickly LineUp
                 </h1>
                 <p class="lead fw-normal text-muted mb-5">
-                  Launch your mobile app landing page faster with this free,
-                  open source theme from Start Bootstrap!
+                  Avoid the long waiting hours in queue, and book your appointment hastle free!
+                  And Easily by booking slots at home.
                 </p>
-                <div class="d-flex flex-column flex-lg-row align-items-center">
-                  <a class="me-lg-3 mb-4 mb-lg-0" href="#!">
-                    <img
-                      class="app-badge"
-                      // src="assets/img/google-play-badge.svg"
-                      alt="..."
-                    />
-                  </a>
-                  <a href="#!">
-                    {/* <img
-                      class="app-badge"
-                      src="assets/img/app-store-badge.svg"
-                      alt="..."
-                    /> */}
-                  </a>
-                </div>
               </div>
             </div>
             <div class="col-lg-6">
@@ -86,18 +72,11 @@ const Landing = () => {
                     data-orientation="portrait"
                     data-color="black"
                   >
-                    <div class="screen bg-black">
-                      {/* <video
-                        muted="muted"
-                        autoplay=""
-                        loop=""
-                        style="max-width: 100%; height: 100%"
-                      >
-                        <source
-                          src="assets/img/demo-screen.mp4"
-                          type="video/mp4"
-                        />
-                      </video> */}
+                    <div class="screen bg-transparent">
+                        <img className="img-responsive"
+                        src={iphone}
+                        style={{maxWidth:"100%",height:"100%"}}>
+                        </img>
                     </div>
                   </div>
                 </div>
@@ -106,7 +85,7 @@ const Landing = () => {
           </div>
         </div>
       </header>
-    </div>
+    </>
   );
 };
 

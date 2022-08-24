@@ -1,20 +1,25 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./Navbar.scss";
 import Login from "../Login/Login";
 import { NavLink } from "react-router-dom";
 const Navbar = () => {
+  
+
+
+
+
   return (
     <>
       <nav
-        class="navbar navbar-expand-lg navbar-light fixed-top shadow-sm"
+        className="navbar navbar-expand-lg navbar-light fixed-top shadow-sm"
         id="mainNav"
       >
-        <div class="container px-5">
-          <a class="navbar-brand fw-bold" href="#page-top">
+        <div className="container px-5">
+          <a className="navbar-brand fw-bold" href="/landing">
             LineUp
           </a>
           <button
-            class="navbar-toggler"
+            className="navbar-toggler"
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#navbarResponsive"
@@ -23,34 +28,50 @@ const Navbar = () => {
             aria-label="Toggle navigation"
           >
             Menu
-            <i class="bi-list"></i>
+            <i className="bi-list"></i>
           </button>
-          <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ms-auto me-4 my-3 my-lg-0">
-              {/* <li class="nav-item">
-                <a class="nav-link me-lg-3" href="#features">
-                  Features
+          <div className="collapse navbar-collapse" id="navbarResponsive">
+            <ul className="navbar-nav ms-auto me-4 my-3 my-lg-0">
+              <li className="nav-item">
+                <a className="nav-link me-lg-3" href="/slots">
+                  Book Appointment
                 </a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link me-lg-3" href="#download">
-                  Download
+              <li className="nav-item">
+                <a className="nav-link me-lg-3" href="/">
+                  Confirm Appointment
                 </a>
-              </li> */}
+              </li>
             </ul>
-            <NavLink to={"/login"}>
-              <button
-                class="btn btn-primary rounded-pill px-3 mb-2 mb-lg-0"
-                data-bs-toggle="modal"
-                data-bs-target="#feedbackModal"
-                style={{ fontFamily: "inherit" }}
-              >
-                <span class="d-flex align-items-center">
-                  {/* <i class="bi-chat-text-fill me-2"></i> */}
-                  <span class="small">Login</span>
-                </span>
-              </button>
-            </NavLink>
+    
+                <NavLink to={"/"}>
+                  <button
+                    className="btn btn-primary rounded-pill px-3 mb-2 mb-lg-0"
+                    data-bs-toggle="modal"
+                    data-bs-target="#feedbackModal"
+                    style={{ fontFamily: "inherit" }}
+                  >
+                    <span className="d-flex align-items-center">
+                      {/* <i className="bi-chat-text-fill me-2"></i> */}
+                      <span className="small">Logout</span>
+                    </span>
+                  </button>
+                </NavLink>
+                :
+                <NavLink to={"/login"}>
+                  <button
+                    className="btn btn-primary rounded-pill px-3 mb-2 mb-lg-0"
+                    data-bs-toggle="modal"
+                    data-bs-target="#feedbackModal"
+                    style={{ fontFamily: "inherit" }}
+                  >
+                    <span className="d-flex align-items-center">
+                      {/* <i className="bi-chat-text-fill me-2"></i> */}
+                      <span className="small">Login</span>
+                    </span>
+                  </button>
+                </NavLink>
+            
           </div>
         </div>
       </nav>
