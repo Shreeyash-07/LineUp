@@ -16,7 +16,6 @@ import Stepper from "./components/Stepper/Stepper";
 import TodayDate from "./components/TodayDate/TodayDate";
 import Scanner from "./components/Scanner/Scanner";
 import Modal1 from "./components/Modal/Modal1";
-import Modal2 from "./components/Modal/Modal2";
 
 
 function App() {
@@ -35,14 +34,6 @@ function App() {
       setStarted(true);
     }
     fetchToken(setTokenFound, setFcmToken);
-    // onMessageListener().then((payload) => {
-    //   setNotification({
-    //     title: payload.notification.title,
-    //     body: payload.notification.body,
-    //   }).catch((err) => {
-    //     console.log(err);
-    //   });
-    // });
   }, []);
 
   // window.localStorage.setItem('timeIsset',false);
@@ -65,7 +56,7 @@ function App() {
           exact
           path="/slots"
           element={
-            isAppointmentBooked ? (
+            !isAppointmentBooked ? (
               <Slots />
             ) : (
               <Navigate replace to={"/status"} />
@@ -76,7 +67,7 @@ function App() {
           exact
           path="/status"
           element={
-            !isAppointmentBooked ? (
+            isAppointmentBooked ? (
               <Status />
             ) : (
               <Navigate replace to={"/slots"} />

@@ -5,7 +5,6 @@ import { NavLink } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { createBrowserHistory } from "history"
 const Navbar = () => {
-//   const history = createBrowserHistory();
   const [cookies, setCookies] = useCookies([]);
   const [Jwt, setJwt] = useCookies([]);
 
@@ -69,9 +68,8 @@ const Navbar = () => {
               >
                 <span className="d-flex align-items-center">
                   {/* <i className="bi-chat-text-fill me-2"></i> */}
-                  <span className="small"
-                  onClick={DelCookie}
-                  >Logout</span>
+
+                  <span className="small" onClick={DelCookie}>Logout</span>
                 </span>
               </button>
             </NavLink>
