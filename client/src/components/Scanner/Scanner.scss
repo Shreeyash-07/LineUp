@@ -1,0 +1,195 @@
+video {
+  transform: translateX(-50%) translateY(-50%);
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  position: fixed; ///Parth chi krupa
+}
+.app__overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  transition: all 200ms ease-in;
+  width: 310px;
+  height: 310px;
+  margin: auto;
+}
+
+.app__overlay-left,
+.app__overlay-right {
+  width: 52px;
+  height: 340px;
+  background: #7f7f7f;
+}
+
+.app__overlay-left {
+  margin-left: -57px;
+  margin-top: -10px;
+}
+
+.app__overlay-right {
+  margin-right: -57px;
+  margin-top: -340px;
+  float: right;
+}
+
+.app__overlay {
+  border: 0;
+}
+
+.app__help-text,
+.app__select-photos {
+  color: #fff;
+  position: absolute;
+  bottom: -70px;
+  font-size: 18px;
+  right: 0;
+  text-align: center;
+  user-select: none;
+}
+
+.app__help-text {
+  display: none;
+  left: 0;
+}
+
+.app__dialog-overlay,
+.app__infodialog-overlay {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 11;
+}
+
+.camera__icon,
+.focus__icon {
+  position: f;
+  left: 10px;
+  display: none;
+}
+
+.app__select-photos {
+  width: 58px;
+  height: 58px;
+  cursor: pointer;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  border-radius: 50%;
+  background-color: #3f51b5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app__select-photos:active {
+  opacity: 0.8;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+#frame {
+  width: auto;
+  height: auto;
+}
+
+.app__version {
+  position: absolute;
+  bottom: 20px;
+  font-size: 12px;
+  color: #737373;
+  margin-top: 15px;
+  display: inline-block;
+}
+
+.app__scanner-img {
+  z-index: 1;
+  position: relative;
+  //   display: flex;
+}
+
+@media screen and (max-width: 480px) {
+  .app__infodialog {
+    width: 90%;
+  }
+
+  .app__infodialog-content {
+    padding: 12px 13px;
+  }
+}
+@-webkit-keyframes scanner {
+  0% {
+    bottom: 90%;
+  }
+  50% {
+    bottom: 10%;
+  }
+  100% {
+    bottom: 90%;
+  }
+}
+
+@-moz-keyframes scanner {
+  0% {
+    bottom: 90%;
+  }
+  50% {
+    bottom: 10%;
+  }
+  100% {
+    bottom: 90%;
+  }
+}
+
+@-o-keyframes scanner {
+  0% {
+    bottom: 90%;
+  }
+  50% {
+    bottom: 10%;
+  }
+  100% {
+    bottom: 90%;
+  }
+}
+
+@keyframes scanner {
+  0% {
+    bottom: 90%;
+  }
+  50% {
+    bottom: 10%;
+  }
+  100% {
+    bottom: 90%;
+  }
+}
+
+.custom-scanner {
+  width: 270px;
+  height: 2px;
+  background: #4caf50;
+  position: absolute;
+  -webkit-transition: all 200ms linear;
+  -moz-transition: all 200ms linear;
+  transition: all 200ms linear;
+  -webkit-animation: scanner 3s infinite linear;
+  -moz-animation: scanner 3s infinite linear;
+  -o-animation: scanner 3s infinite linear;
+  animation: scanner 3s infinite linear;
+  box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.4);
+  display: flex;
+  left: -10px;
+  right: 0;
+  margin: auto;
+}

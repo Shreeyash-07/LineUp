@@ -1,0 +1,66 @@
+.outer_container {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+
+  .inner_container {
+    width: 200px;
+    height: 200px;
+    margin: auto;
+    border-radius: 2.5rem;
+    border: 2px solid black;
+    background-color: aliceblue;
+
+    .middle_container {
+      width: 100%;
+      height: 100%;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+
+      QrReader {
+        display: none;
+        width: 100%;
+        height: 100%;
+        border-radius: 2rem;
+      }
+    }
+  }
+}
+
+.card {
+  width: 320px;
+  height: 497px;
+
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0px 25px 25px rgba(0, 0, 0, 0.0476518);
+
+  padding: 16px;
+}
+
+.card-title {
+  font-weight: 700;
+  font-size: 22px;
+  color: #1f314f;
+  margin-bottom: 16px;
+}
+
+.card-text {
+  font-weight: 400;
+  font-size: 15px;
+  color: #7d889e;
+}
+
+.card-body {
+  text-align: center;
+  padding-top: 24px;
+}
+
+img {
+  border-radius: 10px !important;
+
+  width: 288px !important;
+  height: 288px;
+}
