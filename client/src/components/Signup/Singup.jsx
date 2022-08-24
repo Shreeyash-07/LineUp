@@ -1,9 +1,13 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import { Button, Divider, Form, Grid, Segment } from "semantic-ui-react";
+import { fetchToken } from "../../firebase-config";
 
 const Singup = () => {
+  const [isTokenFound, setTokenFound] = useState(false);
+  const [fcmToken, setFcmToken] = useState("");
   const navigate = useNavigate();
+  const [error, setError] = useState(false);
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -22,7 +26,7 @@ const Singup = () => {
   const postData = async (e) => {
     e.preventDefault();
     const { name, email, password, phone } = user;
-
+    fetchToken(setTokenFound, setFcmToken);
     const res = await fetch("http://localhost:5000/signup", {
       method: "POST",
       headers: {
@@ -33,66 +37,142 @@ const Singup = () => {
         email,
         password,
         phone,
+        fcmToken,
       }),
     });
 
     const data = await res.json();
-    if (data.status === 422 || !data) {
-      window.alert("INVALID");
+    if (data.success === false || !data) {
+      setError(true);
+      return;
     } else {
-      window.alert("SUCCESS");
       navigate("/login");
     }
   };
+  const [isPasswordShow, setIsPasswordShow] = useState(false);
+  const toggleIsPasswordShowValue = (e) => {
+    e.preventDefault();
+    setIsPasswordShow(!isPasswordShow);
+  };
   return (
-    <Segment placeholder>
-      <Grid columns={2} relaxed="very" stackable>
-        <Grid.Column>
-          <Form method="POST" onSubmit={postData}>
-            <Form.Input
-              icon="user"
-              iconPosition="left"
-              label="Username"
-              placeholder="Username"
+    <div className="container-fluid main-container m-auto shadow p-3 rounded">
+      <div class="text-center m-3">
+        <h1>Sign Up</h1>
+      </div>
+      {error && (
+        <div class="alert alert-danger" role="alert">
+          Signup failed, Email already exist
+        </div>
+      )}
+      <form>
+        <div className="row mb-3">
+          <label
+            htmlFor="name"
+            className="col-sm-3 col-form-label"
+            style={{ fontSize: "15px", fontWeight: "800" }}
+          >
+            Name:
+          </label>
+          <div className="col-sm-9">
+            <input
+              type="text"
+              className="form-control"
+              id="name"
+              name="name"
               value={user.name}
               onChange={handleInputs}
+              placeholder="Name"
+              style={{ fontFamily: "inherit" }}
             />
-            <Form.Input
-              icon="mail"
-              iconPosition="left"
+          </div>
+        </div>
+        <div className="row mb-3">
+          <label
+            htmlFor="email"
+            className="col-sm-3 col-form-label"
+            style={{ fontSize: "15px", fontWeight: "800" }}
+          >
+            Email:
+          </label>
+          <div className="col-sm-9">
+            <input
               type="email"
-              label="Email"
-              placeholder="Email"
+              className="form-control"
+              id="email"
+              name="email"
               value={user.email}
               onChange={handleInputs}
+              placeholder="Email"
+              style={{ fontFamily: "inherit" }}
             />
-            <Form.Input
-              icon="lock"
-              iconPosition="left"
-              type="passowrd"
-              label="Password"
-              placeholder="Password"
+          </div>
+        </div>
+        <div className="row mb-3">
+          <label
+            htmlFor="password"
+            className="col-sm-3 col-form-label"
+            style={{ fontSize: "15px", fontWeight: "800" }}
+          >
+            Password:
+          </label>
+          <div className="col-sm-9">
+            <input
+              type="password"
+              className="form-control"
+              id="password"
+              name="password"
               value={user.password}
               onChange={handleInputs}
-            />
-            <Form.Input
-              icon="phone"
-              iconPosition="left"
+              placeholder="Password"
+              style={{ fontFamily: "inherit" }}
+            ></input>
+            {/* <button className="eye-icon" onClick={toggleIsPasswordShowValue}>
+              {isPasswordShow ? (
+                <i class="bi bi-eye-fill"></i>
+              ) : (
+                <i class="bi bi-eye-slash-fill"></i>
+              )}
+            </button> */}
+          </div>
+        </div>
+
+        <div className="row mb-3">
+          <label
+            htmlFor="password"
+            className="col-sm-3 col-form-label"
+            style={{ fontSize: "15px", fontWeight: "800" }}
+          >
+            Phone:
+          </label>
+          <div className="col-sm-9">
+            <input
               type="phone"
-              label="Phone"
-              placeholder="Phone"
+              className="form-control"
+              id="phone"
+              name="phone"
               value={user.phone}
               onChange={handleInputs}
+              placeholder="Phone"
+              style={{ fontFamily: "inherit" }}
             />
-            <Button content="Sign Up" primary />
-          </Form>
-        </Grid.Column>
-        <Grid.Column verticalAlign="middle">
-          <Button content="Log In" icon="signup" size="big"></Button>
-        </Grid.Column>
-      </Grid>
-      <Divider vertical>Or</Divider>
-    </Segment>
+          </div>
+        </div>
+        <div className="text-center">
+          <NavLink to="/login">Already a User?Login here</NavLink>
+          <br />
+          <button
+            type="submit"
+            className="btn btn-primary m-3"
+            name="signup"
+            id="signup"
+            style={{ fontFamily: "inherit" }}
+            onClick={postData}
+          >
+            Sign Up
+          </button>
+        </div>
+      </form>
+    </div>
   );
 };
 
