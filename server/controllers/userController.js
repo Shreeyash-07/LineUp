@@ -57,7 +57,7 @@ exports.logout = async (req, res) => {
 exports.getslots = async (req, res, next) => {
   queueModel.find(
     {
-      date: "19/8/2022",
+      date: new Date().toLocaleDateString(),
       "availableSlots.isFull": { $eq: 0 },
     },
     { _id: 0, date: 0, slots: 0, __v: 0 },
@@ -92,7 +92,7 @@ exports.bookslot = async (req, res) => {
   let bookedSlotObj = { userId: id, name: user.name, phone: user.phone };
   await queueModel.updateOne(
     {
-      date: "19/8/2022",
+      date: new Date().toLocaleDateString(),
       "slots.time": slot,
     },
     {
@@ -101,7 +101,7 @@ exports.bookslot = async (req, res) => {
   ); //Fetching Queue
 
   let slots = await queueModel.aggregate([
-    { $match: { date: "19/8/2022" } },
+    { $match: { date: new Date().toLocaleDateString() } },
     { $unwind: "$slots" },
     { $match: { "slots.time": slot } },
     {
@@ -134,7 +134,7 @@ exports.bookslot = async (req, res) => {
 
   await queueModel.updateOne(
     {
-      date: "19/8/2022",
+      date: new Date().toLocaleDateString(),
       "slots.time": slot,
     },
     {
@@ -152,7 +152,7 @@ exports.bookslot = async (req, res) => {
   len === 5 &&
     (await queueModel.updateOne(
       {
-        data: "19/8/2022",
+        data: new Date().toLocaleDateString(),
         "availableSlots.time": slot,
       },
       {
@@ -178,7 +178,7 @@ exports.bookslot = async (req, res) => {
 
   const reminder = await reminderModel.create({
     userId: req.cookies.userID,
-    message: "Jaa re tera time aa gaya hai",
+    message: "Hello",
     time: new Date(yr, mon, dt, hrs, min, 00),
   }); //Create reminder for user
 
@@ -229,7 +229,7 @@ exports.confirmID = async (req, res) => {
     let slot = user.currentAppointment.time;
     console.log({ slot: slot });
     let slots = await queueModel.aggregate([
-      { $match: { date: "19/8/2022" } },
+      { $match: { date: new Date().toLocaleDateString() } },
       { $unwind: "$slots" },
       { $match: { "slots.time": slot } },
       {
@@ -269,7 +269,7 @@ exports.confirmID = async (req, res) => {
         console.log({ err: err });
       });
     await queueModel.updateOne(
-      { date: "19/8/2022", "slots.time": slot },
+      { date: new Date().toLocaleDateString(), "slots.time": slot },
       { $push: { "slots.$.tempQ": userObj } }
     );
   }

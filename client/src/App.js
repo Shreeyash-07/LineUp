@@ -15,6 +15,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Stepper from "./components/Stepper/Stepper";
 import TodayDate from "./components/TodayDate/TodayDate";
 import Scanner from "./components/Scanner/Scanner";
+import Singup2 from "./components/Signup2/Signup2";
 function App() {
   const [isTokenFound, setTokenFound] = useState(false);
   const [notification, setNotification] = useState({ title: "", body: "" });
@@ -46,6 +47,7 @@ function App() {
     <BrowserRouter>
       <Navbar />
       <Routes>
+        <Route path="/signup2" element={<Singup2 />} />
         <Route path="/scanner" element={<Scanner />} />
         <Route path="/todaydate" element={<TodayDate />} />
         <Route path="/stepper" element={<Stepper />} />

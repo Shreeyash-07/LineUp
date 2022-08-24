@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { QrReader } from "react-qr-reader";
 import { useZxing } from "react-zxing";
 import "./Scanner.scss";
+import MyVerticallyCenteredModal from "../PopupModal/PopupModal";
 const Scanner = () => {
   const [result, setResult] = useState("");
+  const [modalShow, setModalShow] = useState(false);
   const { ref } = useZxing({
     onResult(result) {
       setResult(result.getText());
@@ -72,6 +74,11 @@ const Scanner = () => {
           />
         </svg>
       </div> */}
+
+      <MyVerticallyCenteredModal
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+      />
     </div>
   );
 };

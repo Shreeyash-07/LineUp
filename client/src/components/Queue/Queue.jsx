@@ -13,9 +13,10 @@ const Queue = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [Toggle, setToggle] = useState(false);
   const [status, setStatus] = useState("");
-  const { data, loading, error } = useFetch("http://localhost:5000/admin");
+  const { data, loading, error } = useFetch("/admin");
+  // const [slots, setSlots] = useState(data.data.newSlots);
   // const [data, setData] = useState(data);
-  console.log(data);
+  console.log({ data: data });
 
   const userFunctions = (e) => {
     e.preventDefault();

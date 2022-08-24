@@ -8,6 +8,7 @@ const Navbar = () => {
       <nav
         class="navbar navbar-expand-lg navbar-light fixed-top shadow-sm"
         id="mainNav"
+        // style={{ zIndex: "-1" }}
       >
         <div class="container px-5">
           <a class="navbar-brand fw-bold" href="#page-top">
