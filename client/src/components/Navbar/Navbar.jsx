@@ -2,11 +2,22 @@ import React, { useState, useEffect } from "react";
 import "./Navbar.scss";
 import Login from "../Login/Login";
 import { NavLink } from "react-router-dom";
+import { createBrowserHistory } from "history"
 const Navbar = () => {
-  
+  const history = createBrowserHistory()
 
-
-
+  useEffect(() => {
+    if(history){
+        setisLogin(true)
+        // console.log("Current User : ",currentUser)
+        // console.log("login : ",isLogin)
+    }
+    else{
+      setisLogin(false)
+      // console.log('null user')
+      // console.log("login : ",isLogin)
+    }
+  },[])
 
   return (
     <>
@@ -43,35 +54,35 @@ const Navbar = () => {
                 </a>
               </li>
             </ul>
-    
-                <NavLink to={"/"}>
-                  <button
-                    className="btn btn-primary rounded-pill px-3 mb-2 mb-lg-0"
-                    data-bs-toggle="modal"
-                    data-bs-target="#feedbackModal"
-                    style={{ fontFamily: "inherit" }}
-                  >
-                    <span className="d-flex align-items-center">
-                      {/* <i className="bi-chat-text-fill me-2"></i> */}
-                      <span className="small">Logout</span>
-                    </span>
-                  </button>
-                </NavLink>
-                :
-                <NavLink to={"/login"}>
-                  <button
-                    className="btn btn-primary rounded-pill px-3 mb-2 mb-lg-0"
-                    data-bs-toggle="modal"
-                    data-bs-target="#feedbackModal"
-                    style={{ fontFamily: "inherit" }}
-                  >
-                    <span className="d-flex align-items-center">
-                      {/* <i className="bi-chat-text-fill me-2"></i> */}
-                      <span className="small">Login</span>
-                    </span>
-                  </button>
-                </NavLink>
-            
+
+            <NavLink to={"/"}>
+              <button
+                className="btn btn-primary rounded-pill px-3 mb-2 mb-lg-0"
+                data-bs-toggle="modal"
+                data-bs-target="#feedbackModal"
+                style={{ fontFamily: "inherit" }}
+              >
+                <span className="d-flex align-items-center">
+                  {/* <i className="bi-chat-text-fill me-2"></i> */}
+                  <span className="small">Logout</span>
+                </span>
+              </button>
+            </NavLink>
+            :
+            <NavLink to={"/login"}>
+              <button
+                className="btn btn-primary rounded-pill px-3 mb-2 mb-lg-0"
+                data-bs-toggle="modal"
+                data-bs-target="#feedbackModal"
+                style={{ fontFamily: "inherit" }}
+              >
+                <span className="d-flex align-items-center">
+                  {/* <i className="bi-chat-text-fill me-2"></i> */}
+                  <span className="small">Login</span>
+                </span>
+              </button>
+            </NavLink>
+
           </div>
         </div>
       </nav>
