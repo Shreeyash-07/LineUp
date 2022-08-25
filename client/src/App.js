@@ -17,6 +17,7 @@ import TodayDate from "./components/TodayDate/TodayDate";
 import Scanner from "./components/Scanner/Scanner";
 import Modal1 from "./components/Modal/Modal1";
 import Modal2 from "./components/Modal/Modal2";
+import Help from "./components/Help/Help";
 
 function App() {
   const [isTokenFound, setTokenFound] = useState(false);
@@ -55,6 +56,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/" element={<Landing />} />
+        <Route path="/help" element={<Help />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Singup />} />
         <Route path="/datatable2" element={<Datatable2 />} />

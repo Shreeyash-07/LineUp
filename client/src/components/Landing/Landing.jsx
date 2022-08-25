@@ -1,5 +1,6 @@
 import React from "react";
 import Navbar from "../Navbar/Navbar";
+import Stepper from "../Stepper/Stepper";
 import iphone from "./img/newiphone.svg"
 const Landing = () => {
   return (
@@ -87,6 +88,7 @@ const Landing = () => {
           </div>
         </div>
       </header>
+      <Stepper/>
     </>
   );
 };

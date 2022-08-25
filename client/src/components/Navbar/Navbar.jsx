@@ -50,6 +50,11 @@ const Navbar = () => {
                   Confirm Appointment
                 </a>
               </li>
+              <li className="nav-item">
+                <a className="nav-link me-lg-3" href="/help">
+                  Help and Support
+                </a>
+              </li>
             </ul>
 
             {(isLogin) ?
