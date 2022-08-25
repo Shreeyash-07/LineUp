@@ -27,12 +27,12 @@ const Help = () => {
                     <div className="accordion-item">
                         <h2 className="accordion-header" id="headingTwo">
                             <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                <strong>Difficulty in Booking Appointment ?</strong>
+                                <strong>Avoid the Queues using LineUp</strong>
                             </button>
                         </h2>
                         <div id="collapseTwo" className="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                             <div className="accordion-body" >
-                                Call Parth.
+                            The user can easily schedule an appointment for a time that is convenient for them. After booking an appointment, you can go to the clinic, scan the QR code and confirm your appointment.
                             </div>
                         </div>
                     </div>
@@ -44,7 +44,7 @@ const Help = () => {
                         </h2>
                         <div id="collapseThree" className="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
                             <div className="accordion-body" >
-                                TextUtils is much Compatible with browser as it is a React Application built React Developer Tools.
+                                LineUp is much Compatible with browser as it is a React Application built using React Developer Tools.
                                 User can easily access the pages and can use it in a very efficient way.
                             </div>
                         </div>
