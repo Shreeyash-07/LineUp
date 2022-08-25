@@ -94,17 +94,21 @@ const Department = () => {
           </div>
         </div>
       </header>
-      <div className="my-3">
+      <div className="container">
         <h2>What are you looking for?</h2>
-        <div className="cardWrap">
-          <NavLink to="/dep1details"><EventCard /></NavLink>
-          <NavLink to="/dep2details"><EventCard /></NavLink>
-          <NavLink to="/dep3details"><EventCard /></NavLink>
+        <div className="row">
+          <div className="col-sm-12 col-md-6 col-lg-4">
+            <NavLink to="/dep1details"><EventCard /></NavLink>
+          </div>
+          <div className="col-sm-12 col-md-6 col-lg-4">
+            <NavLink to="/dep2details"><EventCard /></NavLink>
+          </div>
+          <div class="col-sm-12 col-md-6 col-lg-4">
+            <NavLink to="/dep3details"><EventCard /></NavLink>
+          </div>
         </div>
       </div>
-
     </>
   )
 }
-
 export default Department;

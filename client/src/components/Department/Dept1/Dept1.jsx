@@ -7,12 +7,13 @@ const Dept1 = () => {
         <>
             <Navbar />
             <h2 className='text-center'>Our Doctors</h2>
-            <div className="mx-3 my-3" style={{
-                display: "flex",
-                "align-content": "stretch",
-                "justify-content": "space-evenly"
-            }}>
-                <div className="card DeptCard" style={{ width: "18rem", height: "15rem" }}>
+            <div className="container">
+                <div className="row" style={{
+                    "display": "flex",
+                    "justify-content": "space-around",
+                    "margin-top": "65px"
+                }}>
+                <div className="card col-sm-12 col-md-6 col-lg-4" style={{ width: "18rem", height: "15rem" }}>
                     {/* <img src="..." className="card-img" /> */}
                     <div className="card-body">
                         <h5 className="card-title">Doctor 1</h5>
@@ -21,7 +22,7 @@ const Dept1 = () => {
                     </div>
                 </div>
 
-                <div className="card DeptCard" style={{ width: "18rem", height: "15rem" }}>
+                <div className="card col-sm-12 col-md-6 col-lg-4" style={{ width: "18rem", height: "15rem" }}>
                     {/* <img src="..." className="card-img" /> */}
                     <div className="card-body">
                         <h5 className="card-title">Doctor 2</h5>
@@ -30,7 +31,7 @@ const Dept1 = () => {
                     </div>
                 </div>
 
-                <div className="card DeptCard" style={{ width: "18rem", height: "15rem" }}>
+                <div className="card col-sm-12 col-md-6 col-lg-4" style={{ width: "18rem", height: "15rem" }}>
                     {/* <img src="..." className="card-img" /> */}
                     <div className="card-body">
                         <h5 className="card-title">Doctor 3</h5>
@@ -38,6 +39,8 @@ const Dept1 = () => {
                         <a href="#" className="btn btn-primary">Go somewhere</a>
                     </div>
                 </div>
+                </div>
+                
             </div>
         </>
     )
