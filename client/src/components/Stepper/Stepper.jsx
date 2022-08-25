@@ -32,6 +32,9 @@ const steps = [
   },
 ];
 
+// steps.style.fontSize = '4rem';
+
+
 export default function VerticalLinearStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
 
@@ -51,7 +54,7 @@ export default function VerticalLinearStepper() {
 
     <div className="newStepper">
       <h2 className='stepperHeader'>Book Your Slot Today!!!</h2>
-      <Box sx={{ maxWidth: 400 }}>
+      <Box sx={{ maxWidth: 400}}>
         <Stepper activeStep={activeStep} orientation="vertical">
           {steps.map((step, index) => (
             <Step key={step.label}>

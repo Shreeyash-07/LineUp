@@ -5,9 +5,11 @@
     margin: auto;
     width: 50%;
     padding: 10px;
-    background-color: "#3e96e3 !important";
-    box-shadow: 0 2px 8px 0 rgb(0 0 0);
 }   
 .stepperHeader{
     text-align: center;
+}
+
+.MuiStepLabel-labelContainer span {
+    font-size: large;
 }
