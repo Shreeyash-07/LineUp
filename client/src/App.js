@@ -18,6 +18,11 @@ import Scanner from "./components/Scanner/Scanner";
 import Modal1 from "./components/Modal/Modal1";
 import Modal2 from "./components/Modal/Modal2";
 import Help from "./components/Help/Help";
+import Department from "./components/Department/Department";
+import Dept1 from "./components/Department/Dept1/Dept1";
+import Dept2 from "./components/Department/Dept2/Dept2";
+import Dept3 from "./components/Department/Dept3/Dept3";
+import Doc1 from "./components/Department/Doc1";
 
 function App() {
   const [isTokenFound, setTokenFound] = useState(false);
@@ -63,6 +68,17 @@ function App() {
         <Route path="/datatable" element={<Datatable />} />
         <Route path="/Modal1" element={<Modal1 />} />
         <Route path="/Modal2" element={<Modal2 />} />
+
+
+        {/* DEPARTMENT ROUTES */}
+        <Route path="/department" element={<Department/>} />
+        <Route path="/dep1details" element={<Dept1/>} />
+        <Route path="/dep2details" element={<Dept2/>} />
+        <Route path="/dep3details" element={<Dept3/>} />
+        <Route path="/doc1" element={<Doc1/>} />
+
+
+
         <Route
           exact
           path="/slots"

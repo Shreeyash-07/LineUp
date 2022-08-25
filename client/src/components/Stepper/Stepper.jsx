@@ -35,7 +35,7 @@ const steps = [
 // steps.style.fontSize = '4rem';
 
 
-export default function VerticalLinearStepper() {
+function VerticalLinearStepper() {
   const [activeStep, setActiveStep] = React.useState(0);
 
   const handleNext = () => {
@@ -104,3 +104,4 @@ export default function VerticalLinearStepper() {
 
   );
 }
+export default VerticalLinearStepper;

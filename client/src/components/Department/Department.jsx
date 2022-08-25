@@ -1,12 +1,17 @@
-import React from "react";
-import Navbar from "../Navbar/Navbar";
-import VerticalLinearStepper from "../Stepper/Stepper";
-import iphone from "./img/newiphone.svg";
+import React from 'react'
+import { Link, NavLink } from 'react-router-dom';
+import Navbar from '../Navbar/Navbar';
+import EventCard from './EventCard';
+import iphone from "../Landing/img/newiphone.svg";
+import "./Department.css";
 
-const Landing = () => {
+
+
+
+const Department = () => {
   return (
     <>
-    <Navbar/>
+      <Navbar />
       <header class="masthead">
         <div class="container px-5">
           <div class="row gx-5 align-items-center m-3  ">
@@ -77,10 +82,10 @@ const Landing = () => {
                     data-color="black"
                   >
                     <div class="screen bg-transparent">
-                        <img className="img-responsive"
+                      <img className="img-responsive"
                         src={iphone}
-                        style={{maxWidth:"100%",height:"100%"}}>
-                        </img>
+                        style={{ maxWidth: "100%", height: "100%" }}>
+                      </img>
                     </div>
                   </div>
                 </div>
@@ -89,9 +94,17 @@ const Landing = () => {
           </div>
         </div>
       </header>
-      <VerticalLinearStepper/>
-    </>
-  );
-};
+      <div className="my-3">
+        <h2>What are you looking for?</h2>
+        <div className="cardWrap">
+          <NavLink to="/dep1details"><EventCard /></NavLink>
+          <NavLink to="/dep2details"><EventCard /></NavLink>
+          <NavLink to="/dep3details"><EventCard /></NavLink>
+        </div>
+      </div>
 
-export default Landing;
+    </>
+  )
+}
+
+export default Department;

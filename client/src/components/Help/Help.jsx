@@ -6,10 +6,7 @@ const Help = () => {
     return (
         <>
             <Navbar />
-            <div className='container' style={{
-        backgroundColor: "#3e96e3 !important",
-        'boxShadow': '0 2px 8px 0 rgb(0 0 0)'
-      }}>
+            <div className='container'>
                 <h1 className='my-3' >Help and Support</h1>
                 <div className="accordion" id="accordionExample">
                     <div className="accordion-item">

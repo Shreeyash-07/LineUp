@@ -1,0 +1,38 @@
+.eventcard{
+    cursor: pointer;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: .3s ease-in-out;
+    box-shadow: 2px 3px 10px rgba(0,0,0,0.5);
+}
+.eventcard:hover{
+    transition: .3s ease-in-out;
+    box-shadow: 2px 3px 20px rgba(0,0,0,0.7);
+}
+.eventcard img{
+    width:100%;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+}
+@media screen and (min-width:64rem){
+    .eventcard{
+        width: 340px;
+        height: 240px;
+        margin: 20px;
+    }
+}
+@media screen and (max-width:64rem) {
+    .eventcard{
+        width: 40vw;
+        height: 24vw;
+        margin: 20px;
+    }
+}
+@media screen and (max-width:700px){
+    .eventcard{
+        height: 45vw;
+        width: 80vw;
+        margin: 10px;
+    }
+}
