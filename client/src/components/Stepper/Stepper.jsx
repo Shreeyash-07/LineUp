@@ -1,73 +1,110 @@
-import React from "react";
+import * as React from "react";
+import Box from "@mui/material/Box";
+import Stepper from "@mui/material/Stepper";
+import Step from "@mui/material/Step";
+import StepLabel from "@mui/material/StepLabel";
+import StepContent from "@mui/material/StepContent";
+import Button from "@mui/material/Button";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import "./Stepper.css";
 
-const Stepper = () => {
+const steps = [
+  {
+    label: "Login / Register",
+    description: `User should Login or Register before using the LineUp service.`,
+  },
+  {
+    label: "Select desired Services",
+    description:
+      "Select the desired amenity present according to your requirements.",
+  },
+  {
+    label: "Book among Available slot",
+    description: `A User can select the timing of an appointment within the given groove.`,
+  },
+  {
+    label: "Scan and Confirm",
+    description:
+      "Reach the venue on or before time of slot and scan to confirm your appointment.",
+  },
+  {
+    label: "Track your consultation",
+    description:
+      "You can track the current token and estimated time left for your session.",
+  },
+  {
+    label: "Notification",
+    description:
+      "A prompt proclamation will appear when your time comes for the appointment.",
+  },
+];
+
+export default function VerticalLinearStepper() {
+  const [activeStep, setActiveStep] = React.useState(0);
+
+  const handleNext = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const handleReset = () => {
+    setActiveStep(0);
+  };
+
   return (
-    <div>
-      <div class="row mt-1">
-        <div class="col-md-12">
-          <ul class="stepper stepper-vertical">
-            <li class="completed">
-              <a href="#!">
-                <span class="circle">1</span>
-                <span class="label">First step</span>
-              </a>
-            </li>
-
-            <li class="active">
-              <a href="#!">
-                <span class="circle">2</span>
-                <span class="label">Second step</span>
-              </a>
-
-              <div class="step-content grey lighten-3">
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse
-                  cupiditate voluptate facere iusto quaerat vitae excepturi,
-                  accusantium ut aliquam repellat atque nesciunt nostrum
-                  similique. Inventore nostrum ut, nobis porro sapiente.
-                </p>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Dolore error excepturi veniam nemo repellendus, distinctio
-                  soluta vitae at sit saepe. Optio eaque quia excepturi adipisci
-                  pariatur totam, atque odit fugiat.
-                </p>
-                <p>
-                  Deserunt voluptatem illum quae nisi soluta eum perferendis
-                  nesciunt asperiores tempore saepe reiciendis, vero quod a
-                  dolor corporis natus qui magni quas fuga rem excepturi
-                  laboriosam. Quisquam expedita ab fugiat.
-                </p>
-              </div>
-            </li>
-
-            <li class="warning">
-              <a href="#!">
-                <span class="circle">
-                  <i class="fas fa-exclamation"></i>
-                </span>
-                <span class="label">Third step</span>
-              </a>
-            </li>
-
-            <li>
-              <a href="#!">
-                <span class="circle">4</span>
-                <span class="label">Fourth step</span>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="row mt-1">
-        <div class="col-md-12 text-right">
-          <button class="btn btn-flat btn-sm">Cancel</button>
-          <button class="btn btn-primary btn-sm">Next</button>
-        </div>
-      </div>
+    <div className="newStepper" style={{ fontSize: "20px" }}>
+      <h2 className="stepperHeader">Book Your Slot Today!!!</h2>
+      <Box sx={{ maxWidth: 400 }}>
+        <Stepper activeStep={activeStep} orientation="vertical">
+          {steps.map((step, index) => (
+            <Step key={step.label} style={{ fontSize: "20px" }}>
+              <StepLabel
+                style={{ fontSize: "20px" }}
+                optional={
+                  index === 5 ? (
+                    <Typography variant="caption">Last step</Typography>
+                  ) : null
+                }
+              >
+                {step.label}
+              </StepLabel>
+              <StepContent>
+                <Typography>{step.description}</Typography>
+                <Box sx={{ mb: 2 }}>
+                  <div>
+                    <Button
+                      variant="contained"
+                      onClick={handleNext}
+                      sx={{ mt: 1, mr: 1 }}
+                    >
+                      {index === steps.length - 1 ? "Finish" : "Continue"}
+                    </Button>
+                    <Button
+                      disabled={index === 0}
+                      onClick={handleBack}
+                      sx={{ mt: 1, mr: 1 }}
+                    >
+                      Back
+                    </Button>
+                  </div>
+                </Box>
+              </StepContent>
+            </Step>
+          ))}
+        </Stepper>
+        {activeStep === steps.length && (
+          <Paper square elevation={0} sx={{ p: 3 }}>
+            <Typography>All steps completed - you&apos;re finished</Typography>
+            <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
+              Reset
+            </Button>
+          </Paper>
+        )}
+      </Box>
     </div>
   );
-};
-
-export default Stepper;
+}

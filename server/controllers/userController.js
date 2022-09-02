@@ -51,44 +51,93 @@ exports.login = async (req, res, next) => {
 };
 
 exports.logout = async (req, res) => {
-  res.clearCookie("jwtoken").json({ success: true });
+  console.log("del");
+  res.clearCookie("Booked");
+  res.clearCookie("userID");
+  res.clearCookie("jwtoken");
+  res.status(200).json({ sucess: "true" });
 };
 
 exports.getslots = async (req, res, next) => {
-  queueModel.find(
+  // queueModel.find(
+  //   {
+  //     date: new Date().toLocaleDateString(),
+  //     "availableSlots.isFull": { $eq: 0 },
+  //   },
+  //   { _id: 0, date: 0, slots: 0, __v: 0 },
+  //   function (err, timeSlots) {
+  //     if (err) {
+  //       res.json({ error: err });
+  //     }
+  //     var slots = timeSlots[0].availableSlots;
+
+  //     const userid = req.rootUser._id;
+
+  //     res.status(200).json({ slots, userid });
+  //   }
+  // );
+  const newSlots = await queueModel.aggregate([
+    { $match: { date: new Date().toLocaleDateString() } },
     {
-      date: new Date().toLocaleDateString(),
-      "availableSlots.isFull": { $eq: 0 },
+      $project: {
+        x: {
+          $zip: { inputs: ["$availableSlots", "$slots"] },
+        },
+      },
     },
-    { _id: 0, date: 0, slots: 0, __v: 0 },
-    function (err, timeSlots) {
-      if (err) {
-        res.json({ error: err });
-      }
-      var slots = timeSlots[0].availableSlots;
-      // var timeArr = [];
-      // obj.forEach((element) => {
-      //   if (element.isFull === false) {
-      //     timeArr.push(element.time);
-      //   }
-      // });
-
-      const userid = req.rootUser._id;
-
-      res.status(200).json({ slots, userid });
-    }
-  );
+    { $unwind: "$x" },
+    {
+      $project: {
+        time: { $first: "$x.time" },
+        isFull: { $first: "$x.isFull" },
+        QRCode: { $first: "$x.QRCode" },
+        tempQ: { $first: "$x.tempQ" },
+        users: { $first: "$x.users" },
+        count: { $size: { $first: "$x.users" } },
+      },
+    },
+  ]);
+  const userid = req.rootUser._id;
+  return res.json({ newSlots, userid });
 };
 
 exports.getestime = async (req, res) => {
   let user = await userModel.findById(req.cookies.userID);
   let estimatedTime = user.currentAppointment.estimatedTime;
-  res.json({ estimatedTime });
+  let yourToken = user.currentAppointment.token;
+  let slot = user.currentAppointment.time;
+  // let slots = await queueModel.aggregate([
+  //   { $match: { date: new Date().toLocaleDateString() } },
+  //   { $unwind: "$slots" },
+  //   { $match: { "slots.time": slot } },
+  //   {
+  //     $project: {
+  //       users: "$slots.tempQ",
+  //     },
+  //   },
+  // ]);
+  // let users = slots[0].users;
+  // let servingToken;
+  // users.forEach((user) => {
+  //   if (user.isBeingServe === true) {
+  //     servingToken = user.token;
+  //     return;
+  //   }
+  // });
+  res.json({ estimatedTime, yourToken });
 };
+
+// exports.adduser = async(req,res) =>{
+//   let { name,phone,slot } = req.body;
+//   let bookedSlotObj = { userId: id, name: user.name, phone: user.phone };
+// }
 
 exports.bookslot = async (req, res) => {
   let { slot, id } = req.body;
   const user = await userModel.findById(id);
+  if (user.isBooked === true) {
+    return res.json({ success: false });
+  }
   let bookedSlotObj = { userId: id, name: user.name, phone: user.phone };
   await queueModel.updateOne(
     {
@@ -178,7 +227,7 @@ exports.bookslot = async (req, res) => {
 
   const reminder = await reminderModel.create({
     userId: req.cookies.userID,
-    message: "Hello",
+    message: "You are ready to LineUp",
     time: new Date(yr, mon, dt, hrs, min, 00),
   }); //Create reminder for user
 
@@ -186,8 +235,8 @@ exports.bookslot = async (req, res) => {
     _id: reminder._id,
     sendAt: reminder.time,
   });
-  res.json({
-    SUCCESS: true,
+  return res.json({
+    success: true,
     time: new Date(),
     timenew: new Date(yr, mon, dt, hrs, min, 00),
   });
@@ -215,16 +264,20 @@ const findEmailDuplicates = async (email, res) => {
 };
 
 exports.confirmID = async (req, res) => {
+  let checkSuccess = false;
   const { data } = req.body;
   console.log(data);
+  console.log({ data: data });
+  // console.log({ parsedData: JSON.parse(data) });
   const userID = req.cookies.userID;
-
+  console.log({ userIdcookie: userID });
   // console.log(req.cookies.userID);
   function findId(id) {
     return id === userID;
   }
   const x = data.find(findId);
   if (x) {
+    console.log("inside x");
     const user = await userModel.findById(userID);
     let slot = user.currentAppointment.time;
     console.log({ slot: slot });
@@ -272,8 +325,20 @@ exports.confirmID = async (req, res) => {
       { date: new Date().toLocaleDateString(), "slots.time": slot },
       { $push: { "slots.$.tempQ": userObj } }
     );
+    const res = await queueModel.findOneAndUpdate(
+      {
+        date: new Date().toLocaleDateString(),
+        "slots.time": slot,
+        "slots.$.users.userId": userID,
+      },
+      {
+        $set: { "slots.$.users.0.isConfirmed": true },
+      }
+    );
+    checkSuccess = true;
   }
-  return res.json({ status: true });
+
+  return res.json(checkSuccess);
 };
 
 const sendToken = async (user, statusCode, res) => {
@@ -286,21 +351,9 @@ const sendToken = async (user, statusCode, res) => {
   res
     .cookie("jwtoken", token, { httpOnly: true })
     .cookie("userID", user._id)
-    .cookie("Booked", isbooked, { overwrite: true })
     .status(statusCode)
     .json({ success: true, token, user });
 };
-
-// const res = await queueModel.findOneAndUpdate(
-//   {
-//     date: "19/8/2022",
-//     "slots.time": slot,
-//     "slots.$.users.userId": userID,
-//   },
-//   {
-//     $set: { "slots.$.users.0.isConfirmed": true },
-//   }
-// );
 
 // {
 //         $group: {

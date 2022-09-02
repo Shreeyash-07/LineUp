@@ -12,10 +12,21 @@ import Landing from "./components/Landing/Landing";
 import Datatable2 from "./components/DataTable/Datatable2";
 import Datatable from "./components/DataTable/DataTable";
 import Navbar from "./components/Navbar/Navbar";
-import Stepper from "./components/Stepper/Stepper";
+// import Stepper from "./components/Stepper/Stepper";
 import TodayDate from "./components/TodayDate/TodayDate";
 import Scanner from "./components/Scanner/Scanner";
 import Singup2 from "./components/Signup2/Signup2";
+import Modal1 from "./components/Modal/Modal1";
+import Add from "./components/Queue/Add";
+import Help from "./components/Help/Help";
+// import Department from "./components/Department/Department";
+import Dept1 from "./components/Department/Dept1/Dept1";
+import Dept2 from "./components/Department/Dept2/Dept2";
+import Dept3 from "./components/Department/Dept3/Dept3";
+import Doc1 from "./components/Department/Doc1";
+import Hospital from "./components/Department/Hospital";
+import Depart from "./components/Department/Depart";
+
 function App() {
   const [isTokenFound, setTokenFound] = useState(false);
   const [notification, setNotification] = useState({ title: "", body: "" });
@@ -24,7 +35,7 @@ function App() {
   const [cookies, setCookies] = useCookies([]);
   const [isAppointmentBooked, setIsAppointmentBooked] = useState();
   useEffect(() => {
-    setIsAppointmentBooked(cookies.Booked);
+    // setIsAppointmentBooked(cookies.Booked);
     console.log(isAppointmentBooked);
     const data = window.localStorage.getItem("timeIsset");
     if (data !== null) {
@@ -32,25 +43,17 @@ function App() {
       setStarted(true);
     }
     fetchToken(setTokenFound, setFcmToken);
-    // onMessageListener().then((payload) => {
-    //   setNotification({
-    //     title: payload.notification.title,
-    //     body: payload.notification.body,
-    //   }).catch((err) => {
-    //     console.log(err);
-    //   });
-    // });
   }, []);
 
   // window.localStorage.setItem('timeIsset',false);
   return (
     <BrowserRouter>
-      <Navbar />
+      {/* <Navbar /> */}
       <Routes>
         <Route path="/signup2" element={<Singup2 />} />
         <Route path="/scanner" element={<Scanner />} />
         <Route path="/todaydate" element={<TodayDate />} />
-        <Route path="/stepper" element={<Stepper />} />
+        {/* <Route path="/stepper" element={<Stepper />} /> */}
         <Route path="/landing" element={<Landing />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/" element={<Home />} />
@@ -58,28 +61,20 @@ function App() {
         <Route path="/signup" element={<Singup />} />
         <Route path="/datatable2" element={<Datatable2 />} />
         <Route path="/datatable" element={<Datatable />} />
-        <Route
-          exact
-          path="/slots"
-          element={
-            isAppointmentBooked ? (
-              <Slots />
-            ) : (
-              <Navigate replace to={"/status"} />
-            )
-          }
-        />
-        <Route
-          exact
-          path="/status"
-          element={
-            !isAppointmentBooked ? (
-              <Status />
-            ) : (
-              <Navigate replace to={"/slots"} />
-            )
-          }
-        />
+        <Route path="/Modal1" element={<Modal1 />} />
+        <Route exact path="/slots" element={<Slots />} />
+        <Route exact path="/status" element={<Status />} />
+        <Route exact path="/add" element={<Add />} />
+        <Route path="/help" element={<Help />} />
+
+        {/* DEPARTMENT ROUTES */}
+        {/* <Route path="/department" element={<Department />} /> */}
+        <Route path="/dep1details" element={<Dept1 />} />
+        <Route path="/dep2details" element={<Dept2 />} />
+        <Route path="/dep3details" element={<Dept3 />} />
+        <Route path="/hospital" element={<Hospital />} />
+        <Route path="/doc1" element={<Doc1 />} />
+        <Route path="/depart" element={<Depart />} />
       </Routes>
     </BrowserRouter>
   );
