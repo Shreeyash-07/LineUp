@@ -72,6 +72,7 @@ exports.setTime = async (req, res, next) => {
   });
   return res.json({ date: "set successfully" }).status(200); //json({message:aslots,test:parseInt(toSetMin)+1})
 };
+<<<<<<< HEAD
 
 exports.adduser = async (req, res) => {
   console.log("add user");
@@ -152,6 +153,35 @@ exports.getTime = async (req, res, next) => {
 
   // console.log(new Date().toLocaleDateString());
   // res.json({ message: "justmessage" });
+=======
+exports.getTime = async (req, res, next) => {
+  const response = await queueModel.findOne({ date: new Date().toLocaleDateString() });
+  if (response) {
+    console.log("Date Exist")
+  }
+  // const newSlots = await queueModel.aggregate([
+  //   { $match: { date: "19/8/2022" } },
+  //   {
+  //     $project: {
+  //       x: {
+  //         $zip: { inputs: ["$availableSlots", "$slots"] },
+  //       },
+  //     },
+  //   },
+  //   { $unwind: "$x" },
+  //   {
+  //     $project: {
+  //       time: { $first: "$x.time" },
+  //       isFull: { $first: "$x.isFull" },
+  //       QRCode: { $first: "$x.QRCode" },
+  //       tempQ: { $first: "$x.tempQ" },
+  //       users: { $first: "$x.users" },
+  //     },
+  //   },
+  // ]);
+  //   let slts = slots[0].availableSlots;
+  return res.json(newSlots);
+>>>>>>> c321473c1bf9c54383ffd8d30d74baedf0b7b09d
 };
 
 // function generateQR(slotsNumber,slots,min){

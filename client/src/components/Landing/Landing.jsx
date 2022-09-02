@@ -1,4 +1,5 @@
 import React from "react";
+<<<<<<< HEAD
 import Lineup from "../../images/newiphone.svg";
 import Stepper from "../Stepper/Stepper";
 import Dept1 from "../Department/Dept1/Dept1";
@@ -29,6 +30,24 @@ const Landing = () => {
                 <p className="lead fw-normal text-muted mb-5">
                   Avoid the long waiting hours in queue, and book your
                   appointment hastle free! And Easily by booking slots at home.
+=======
+import iphone from "./img/newiphone.svg"
+const Landing = () => {
+  return (
+    <>
+      <header class="masthead">
+        <div class="container px-5">
+          <div class="row gx-5 align-items-center m-3  ">
+            <div class="col-lg-6" >
+              <div class="mb-5 mb-lg-0 text-center text-lg-start">
+                <h1 class="display-1 lh-1 mb-3 d-flex "
+                  style={{ fontSize: "80px", fontWeight: "650" }}>
+                  Quickly LineUp
+                </h1>
+                <p class="lead fw-normal text-muted mb-5">
+                  Avoid the long waiting hours in queue, and book your appointment hastle free!
+                  And Easily by booking slots at home.
+>>>>>>> c321473c1bf9c54383ffd8d30d74baedf0b7b09d
                 </p>
               </div>
             </div>
@@ -86,12 +105,20 @@ const Landing = () => {
                     data-orientation="portrait"
                     data-color="black"
                   >
+<<<<<<< HEAD
                     <div className="screen bg-transparent">
                       <img
                         className="img-responsive"
                         src={Lineup}
                         style={{ maxWidth: "100%", height: "100%" }}
                       ></img>
+=======
+                    <div class="screen bg-transparent">
+                        <img className="img-responsive"
+                        src={iphone}
+                        style={{maxWidth:"100%",height:"100%"}}>
+                        </img>
+>>>>>>> c321473c1bf9c54383ffd8d30d74baedf0b7b09d
                     </div>
                   </div>
                 </div>
@@ -100,6 +127,7 @@ const Landing = () => {
           </div>
         </div>
       </header>
+<<<<<<< HEAD
       <hr />
       <div className="my-3">
         <h2>What are you looking for?</h2>
@@ -111,6 +139,8 @@ const Landing = () => {
       </div>
       <hr />
       <Stepper />
+=======
+>>>>>>> c321473c1bf9c54383ffd8d30d74baedf0b7b09d
     </>
   );
 };

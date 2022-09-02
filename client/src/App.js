@@ -15,6 +15,7 @@ import Navbar from "./components/Navbar/Navbar";
 // import Stepper from "./components/Stepper/Stepper";
 import TodayDate from "./components/TodayDate/TodayDate";
 import Scanner from "./components/Scanner/Scanner";
+<<<<<<< HEAD
 import Singup2 from "./components/Signup2/Signup2";
 import Modal1 from "./components/Modal/Modal1";
 import Add from "./components/Queue/Add";
@@ -26,6 +27,10 @@ import Dept3 from "./components/Department/Dept3/Dept3";
 import Doc1 from "./components/Department/Doc1";
 import Hospital from "./components/Department/Hospital";
 import Depart from "./components/Department/Depart";
+=======
+import Modal1 from "./components/Modal/Modal1";
+import Modal2 from "./components/Modal/Modal2";
+>>>>>>> c321473c1bf9c54383ffd8d30d74baedf0b7b09d
 
 function App() {
   const [isTokenFound, setTokenFound] = useState(false);
@@ -61,6 +66,7 @@ function App() {
         <Route path="/signup" element={<Singup />} />
         <Route path="/datatable2" element={<Datatable2 />} />
         <Route path="/datatable" element={<Datatable />} />
+<<<<<<< HEAD
         <Route path="/Modal1" element={<Modal1 />} />
         <Route exact path="/slots" element={<Slots />} />
         <Route exact path="/status" element={<Status />} />
@@ -75,6 +81,32 @@ function App() {
         <Route path="/hospital" element={<Hospital />} />
         <Route path="/doc1" element={<Doc1 />} />
         <Route path="/depart" element={<Depart />} />
+=======
+        <Route path="/Modal1" element={<Modal1 />}/>
+        <Route path="/Modal2" element={<Modal2 />}/>
+        <Route
+          exact
+          path="/slots"
+          element={
+            isAppointmentBooked ? (
+              <Slots />
+            ) : (
+              <Navigate replace to={"/status"} />
+            )
+          }
+        />
+        <Route
+          exact
+          path="/status"
+          element={
+            !isAppointmentBooked ? (
+              <Status />
+            ) : (
+              <Navigate replace to={"/slots"} />
+            )
+          }
+        />
+>>>>>>> c321473c1bf9c54383ffd8d30d74baedf0b7b09d
       </Routes>
     </BrowserRouter>
   );
