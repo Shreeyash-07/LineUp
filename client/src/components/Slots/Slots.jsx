@@ -3,6 +3,9 @@ import useFetch from "../../Hooks/useFetch";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import TodayDate from "../TodayDate/TodayDate";
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
+import Navbar from "../Navbar/Navbar";
 
 const Slots = () => {
   let datee = new Date().getDate();
@@ -12,12 +15,22 @@ const Slots = () => {
 
   const [slots, setSlots] = useState([]);
   const [user, setUser] = useState();
+  const [Cookies, setCookies] = useCookies([]);
+  const [size, setSize] = useState();
+  // const [slotsize, setslotSize] = useState();
   const [slotTime, setSlotTime] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [date, setDate] = useState(new Date());
+  const navigate = useNavigate();
   const slotBook = async (e) => {
     e.preventDefault();
+    const countVal = e.target.getAttribute("count");
+
+    console.log(countVal);
+
+    setSize(countVal);
+
     setSlotTime(e.target.getAttribute("value"));
     try {
       const res = await fetch("/bookslot", {
@@ -31,37 +44,55 @@ const Slots = () => {
         }),
       });
       const data = await res.json();
-      if (!data) {
-        alert("Not Booked");
+      if (data.success === false) {
+        alert("You already booked a slot");
       } else {
         alert("Booked");
+        navigate("/");
       }
+      // if (!data) {
+      //   alert("Not Booked");
+      // } else {
+      //   alert("Booked");
+      //   navigate("/");
+      // }
     } catch (err) {
       console.log({ err: err });
     }
+    window.location.reload();
   };
 
   useEffect(() => {
+    console.log(Cookies);
+    const size = Object.keys(Cookies).length;
+    // setisLogin(true);
+    setSize(size);
+    console.log(size);
     const fetchData = async () => {
       setLoading(true);
       try {
         const res = await fetch("/getslots");
         const mainData = await res.json();
-        setSlots(mainData.slots);
+        setSlots(mainData.newSlots);
         setUser(mainData.userid);
+        console.log(mainData.newSlots);
       } catch (err) {
         setError(err);
       }
       setLoading(false);
     };
+
+    // console.log(size);
+    // if (size === 0) {
+    //   navigate("/login");
+    // }
     fetchData();
   }, []);
 
   return (
     <>
-      <div>
-        <TodayDate />
-      </div>
+      <Navbar />
+      <div>{/* <TodayDate /> */}</div>
       <br />
       <ol class="list-group">
         <li
@@ -95,6 +126,7 @@ const Slots = () => {
                   className=".col-md-6 .col-md-6 btn btn-outline-primary"
                   key={index}
                   value={element.time}
+                  count={element.count}
                   onClick={slotBook}
                   disabled={element.isFull}
                   style={{ width: "120px" }}
@@ -104,7 +136,9 @@ const Slots = () => {
                 </button>
               </div>
             </div>
-            <span class="badge bg-primary rounded-pill">5 spots</span>
+            <span class="badge bg-primary rounded-pill">
+              {4 - element.count}spots
+            </span>
           </li>
         ))}
       </ol>

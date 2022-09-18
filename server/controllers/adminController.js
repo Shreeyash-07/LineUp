@@ -2,8 +2,16 @@ const express = require("express");
 const schedule = require("node-schedule");
 var QRCode = require("qrcode");
 const queueModel = require("../models/queue");
-
+const prioritySchedule = require("../models/prioritySchedule");
+const slotRefModel = require("../models/slotsRef");
 exports.setTime = async (req, res, next) => {
+  // const response = await queueModel.findOne({
+  //   date: new Date().toLocaleDateString(),
+  // });
+  // if (response) {
+  //   alert("date already started");
+  //   return res.json({ success: false });
+  // }
   var time = req.body.time;
   console.log(time);
   console.log("Hello");
@@ -37,6 +45,14 @@ exports.setTime = async (req, res, next) => {
       time: hrs + ":" + min + "-" + nexthr + ":" + min,
       QRCode: uri,
     });
+    const priorityReminder = await prioritySchedule.create({
+      endAt: new Date(yr, mon, dt, nexthr, min, 00),
+    });
+    await slotRefModel.create({
+      slotRefId: priorityReminder._id,
+      prevSlot: hrs + ":" + min + "-" + (hrs + 1) + ":" + min,
+      nextSlot: nexthr + ":" + min + "-" + (nexthr + 1) + ":" + min,
+    });
     hrs = nexthr;
   }
 
@@ -56,6 +72,88 @@ exports.setTime = async (req, res, next) => {
   });
   return res.json({ date: "set successfully" }).status(200); //json({message:aslots,test:parseInt(toSetMin)+1})
 };
+<<<<<<< HEAD
+
+exports.adduser = async (req, res) => {
+  console.log("add user");
+  const { name, phone, time } = req.body;
+  console.log({ name, phone, time });
+  let slots = await queueModel.aggregate([
+    { $match: { date: new Date().toLocaleDateString() } },
+    { $unwind: "$slots" },
+    { $match: { "slots.time": time } },
+    {
+      $project: {
+        "slots.time": "$slots.time",
+        "slots.count": { $size: "$slots.tempQ" },
+      },
+    },
+  ]);
+  let timeSlot = slots[0].slots.time;
+  // res.json(timeSlot);
+  let tempQcount = slots[0].slots.count;
+  let [leftside, rightside] = time.split("-");
+  let [hr, min] = leftside.split(":");
+  let [hr1, min1] = rightside.split(":");
+  const token = hr + "_" + hr1 + "_" + tempQcount;
+  let userObj = {
+    name: name,
+    phone: phone,
+    time: time,
+    token: token,
+    isConfirmed: true,
+  };
+  await queueModel.findOneAndUpdate(
+    {
+      date: new Date().toLocaleDateString(),
+      "slots.time": time,
+    },
+    {
+      $push: {
+        "slots.$.tempQ": userObj,
+      },
+    }
+  );
+  return res.json({ sucess: true });
+};
+
+exports.getTime = async (req, res, next) => {
+  console.log("getTime");
+  // console.log(new Date().toLocaleDateString());
+  //   const slots = await queueModel.find({ date: "7/7/2022" });
+  const response = await queueModel.findOne({
+    date: new Date().toLocaleDateString(),
+  });
+  if (response) {
+    const newSlots = await queueModel.aggregate([
+      { $match: { date: new Date().toLocaleDateString() } },
+      {
+        $project: {
+          x: {
+            $zip: { inputs: ["$availableSlots", "$slots"] },
+          },
+        },
+      },
+      { $unwind: "$x" },
+      {
+        $project: {
+          time: { $first: "$x.time" },
+          isFull: { $first: "$x.isFull" },
+          QRCode: { $first: "$x.QRCode" },
+          tempQ: { $first: "$x.tempQ" },
+          users: { $first: "$x.users" },
+        },
+      },
+    ]);
+    console.log("yes data");
+    return res.json(newSlots);
+  }
+  console.log("inside gettime");
+  return res.json({ message: false });
+
+  // console.log(new Date().toLocaleDateString());
+  // res.json({ message: "justmessage" });
+=======
 exports.getTime = async (req, res, next) => {
   const response = await queueModel.findOne({ date: new Date().toLocaleDateString() });
   if (response) {
@@ -83,6 +181,7 @@ exports.getTime = async (req, res, next) => {
   // ]);
   //   let slts = slots[0].availableSlots;
   return res.json(newSlots);
+>>>>>>> c321473c1bf9c54383ffd8d30d74baedf0b7b09d
 };
 
 // function generateQR(slotsNumber,slots,min){
@@ -120,7 +219,7 @@ exports.startServing = async (req, res) => {
   console.log({ userid: id, slot: slot });
   await queueModel.findOneAndUpdate(
     {
-      data: "20/8/2022",
+      date: new Date().toLocaleDateString(),
       "slots.time": slot,
       "slots.$.tempQ.userId": id,
     },
@@ -149,5 +248,6 @@ exports.stopServing = async (req, res) => {
       },
     }
   );
+
   res.json({ status: true });
 };

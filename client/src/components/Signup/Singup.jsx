@@ -56,11 +56,11 @@ const Singup = () => {
   };
   return (
     <div className="container-fluid main-container m-auto shadow p-3 rounded">
-      <div class="text-center m-3">
+      <div className="text-center m-3">
         <h1>Sign Up</h1>
       </div>
       {error && (
-        <div class="alert alert-danger" role="alert">
+        <div className="alert alert-danger" role="alert">
           Signup failed, Email already exist
         </div>
       )}

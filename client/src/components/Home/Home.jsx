@@ -52,6 +52,7 @@ const Home = () => {
   };
   return (
     <>
+      <Navbar />
       {/* <QrReader
         onScan={checkId}
         onResult={(result, error) => {
@@ -76,7 +77,7 @@ const Home = () => {
       <main>
         <div className="card">
           <img src={QrScanLogo} className="card-img-top" alt="..." />
-          <div class="card-body">
+          <div className="card-body">
             <NavLink to={"/scanner"}>
               <button
                 type="button"

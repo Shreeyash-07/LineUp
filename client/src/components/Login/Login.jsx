@@ -35,7 +35,8 @@ const Login = () => {
         setError(true);
         return;
       } else {
-        navigate("/");
+        navigate("/slots");
+        window.location.reload();
       }
     }
   };

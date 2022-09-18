@@ -1,24 +1,73 @@
 import React, { useState } from "react";
 import { QrReader } from "react-qr-reader";
+import { useNavigate } from "react-router-dom";
 import { useZxing } from "react-zxing";
 import "./Scanner.scss";
+import MyVerticallyCenteredModal from "../PopupModal/PopupModal";
 const Scanner = () => {
-  const [result, setResult] = useState("");
+  const navigate = useNavigate();
+  // const [result, setResult] = useState("");
+  const [modalData, setModalData] = useState({
+    success: false,
+    title: "",
+    body: "",
+  });
+  const [modalShow, setModalShow] = useState(false);
+  const [data, setData] = useState();
+  const checkqr = async () => {
+    const res = await fetch("/checkqr", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        data,
+      }),
+    });
+    const resdata = await res.json();
+    console.log(resdata);
+    if (resdata === true) {
+      setModalData({
+        success: true,
+        title: "Confirm",
+        body: "You want to confirm?",
+      });
+      setModalShow(true);
+    } else {
+      setModalData({
+        success: false,
+        title: "Sorry",
+        data: "Failed to confirm",
+      });
+      setModalShow(true);
+    }
+  };
+
   const { ref } = useZxing({
     onResult(result) {
-      setResult(result.getText());
-      console.log(JSON.parse(result.getText()));
+      setData(JSON.parse(result.getText()));
+      console.log({ frontend: JSON.parse(result.getText()) });
+      checkqr();
+      // showModal();
     },
   });
-
+  const closeModalandRoute = () => {
+    setModalShow(false);
+    console.log({ modalDataSuccess: modalData.success });
+    if (modalData.success === true) {
+      navigate("/status");
+    } else {
+      navigate("/scanner");
+    }
+  };
   return (
     <div>
-      <video ref={ref} autoPlay="true" playsInline="true" />
-      <div class="app__overlay">
-        <div class="app__overlay-frame"></div>
+      <video ref={ref} autoPlay={true} playsInline={true} />
+      <div className="app__overlay">
+        <div className="app__overlay-frame"></div>
         {/* scanner animation */}
         <svg
-          class="app__scanner-img"
+          className="app__scanner-img"
           width="310"
           height="310"
           viewBox="0 0 215 215"
@@ -29,15 +78,15 @@ const Scanner = () => {
           <g
             id="Page-1"
             stroke="none"
-            stroke-width="1"
+            strokeWidth="1"
             fill="none"
-            fill-rule="evenodd"
+            fillRule="evenodd"
           >
             <g
               id="Artboard"
               transform="translate(-146.000000, -58.000000)"
               fill="#FFFFFF"
-              fill-rule="nonzero"
+              fillRule="nonzero"
             >
               <g id="scanner" transform="translate(146.000000, 58.000000)">
                 <path
@@ -48,30 +97,16 @@ const Scanner = () => {
             </g>
           </g>
         </svg>
-        <div class="custom-scanner"></div>
-        <div class="app__help-text"></div>
+        <div className="custom-scanner"></div>
+        <div className="app__help-text"></div>
       </div>
-      {/* <div class="app__select-photos">
-        <svg
-          fill="#fff"
-          xmlns="http://www.w3.org/2000/svg"
-          xmlnsXlink="http://www.w3.org/1999/xlink"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-        >
-          <defs>
-            <path id="a" d="M24 24H0V0h24v24z" />
-          </defs>
-          <clipPath id="b">
-            <use xlinkHref="#a" overflow="visible" />
-          </clipPath>
-          <path
-            clip-path="url(#b)"
-            d="M3 4V1h2v3h3v2H5v3H3V6H0V4h3zm3 6V7h3V4h7l1.83 2H21c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V10h3zm7 9c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-3.2-5c0 1.77 1.43 3.2 3.2 3.2s3.2-1.43 3.2-3.2-1.43-3.2-3.2-3.2-3.2 1.43-3.2 3.2z"
-          />
-        </svg>
-      </div> */}
+      <MyVerticallyCenteredModal
+        success={modalData.success}
+        title={modalData.title}
+        body={modalData.body}
+        show={modalShow}
+        onHide={closeModalandRoute}
+      />
     </div>
   );
 };
